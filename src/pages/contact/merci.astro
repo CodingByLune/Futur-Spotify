@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Message envoyé" noindex floatingContact={false}>
+  <section class="wrap msg">
+    <h1 class="display-l">Message <span class="serif">envoyé.</span></h1>
+    <p class="lead msg-p">Merci, je reviens vers vous rapidement.</p>
+    <div class="msg-links">
+      <a class="cta cta--lg" href="/projets">Voir les projets <span class="arrow" aria-hidden="true">→</span></a>
+      
+      
+    </div>
+  </section>
+</Base>
+
+<style>
+  .msg { padding-top: calc(var(--header-h) + clamp(96px, 14vw, 180px)); padding-bottom: var(--section); min-height: 70vh; }
+  .msg-p { margin-top: 28px; color: var(--gris-300); }
+  .msg-links { display: flex; flex-wrap: wrap; gap: 32px; margin-top: 48px; }
+</style>

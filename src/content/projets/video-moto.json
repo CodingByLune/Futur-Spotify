@@ -1,0 +1,34 @@
+{
+  "title": "Vidéo moto",
+  "order": 4,
+  "featured": true,
+  "template": "video",
+  "type": "perso",
+  "year": null,
+  "disciplines": ["video", "social"],
+  "collection": "moto",
+  "tools": [],
+  "summary": "Vidéos verticales autour d'un roadster, pensées pour les réseaux sociaux.",
+  "context": null,
+  "cover": {
+    "src": "video-moto/video-4.jpg",
+    "alt": "Roadster noir sur une route mouillée au crépuscule.",
+    "kind": "video",
+    "ratio": "9/16"
+  },
+  "chapters": [
+    {
+      "title": "Reels",
+      "accent": "9:16",
+      "layout": "band",
+      "media": [
+        { "src": "video-moto/video-1.jpg", "alt": "Roadster noir derrière un rideau de branches, au bord de l'eau.", "kind": "video", "ratio": "9/16" },
+        { "src": "video-moto/video-2.jpg", "alt": "Roadster noir garé devant un bâtiment, en plein jour.", "kind": "video", "ratio": "9/16" },
+        { "src": "video-moto/video-3.jpg", "alt": "Roadster noir sur un chemin en forêt.", "kind": "video", "ratio": "9/16" },
+        { "src": "video-moto/video-4.jpg", "alt": "Roadster noir sur une route mouillée au crépuscule.", "kind": "video", "ratio": "9/16" }
+      ]
+    }
+  ],
+  "rights": { "owner": "Kelyan Ferreira-Macias", "status": "personnel", "notes": "Vérifier la licence des musiques ; privilégier des versions sans musique." },
+  "next": "photographie"
+}

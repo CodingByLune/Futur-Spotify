@@ -1,0 +1,21 @@
+---
+/** Gabarit des pages légales : colonne de lecture, date de mise à jour. */
+interface Props { title: string; updated: string | null }
+const { title, updated } = Astro.props;
+---
+<article class="wrap legal">
+  <h1 class="display-l">{title}</h1>
+  <p class="meta legal-date">{updated ? `Mise à jour : ${updated}` : 'Date de mise à jour : à compléter'}</p>
+  <div class="legal-body"><slot /></div>
+</article>
+
+<style>
+  .legal { padding-top: calc(var(--header-h) + clamp(56px, 9vw, 120px)); padding-bottom: var(--section); }
+  .legal-date { margin-top: 18px; }
+  .legal-body { max-width: 68ch; margin-top: clamp(40px, 6vw, 72px); color: var(--gris-300); }
+  .legal-body :global(h2) { font-family: var(--f-display); font-stretch: 105%; font-weight: 500; font-size: 1.5rem; letter-spacing: -0.02em; color: var(--blanc-50); margin-top: 48px; margin-bottom: 14px; }
+  .legal-body :global(p), .legal-body :global(li) { margin-top: 10px; }
+  .legal-body :global(ul) { padding-left: 1.2em; }
+  .legal-body :global(a) { color: var(--blanc-50); text-decoration: underline; text-underline-offset: 3px; }
+  .legal-body :global(.todo) { color: var(--cognac-300); font-family: var(--f-mono); font-size: 0.8125rem; }
+</style>

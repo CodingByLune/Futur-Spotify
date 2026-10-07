@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import site from '../../data/site.json';
+---
+<Base title="Envoi impossible" noindex floatingContact={false}>
+  <section class="wrap msg">
+    <h1 class="display-l">Envoi <span class="serif">impossible.</span></h1>
+    <p class="lead msg-p">Votre message n'a pas pu être envoyé. Vérifiez les champs et réessayez, ou contactez-moi via Instagram ou LinkedIn.</p>
+    <div class="msg-links">
+      <a class="cta cta--lg" href="/projets">Voir les projets <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="cta" href="/contact">Revenir au formulaire <span class="arrow" aria-hidden="true">←</span></a>
+      {site.email && <a class="cta" href={`mailto:${site.email}`}>{site.email}</a>}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .msg { padding-top: calc(var(--header-h) + clamp(96px, 14vw, 180px)); padding-bottom: var(--section); min-height: 70vh; }
+  .msg-p { margin-top: 28px; color: var(--gris-300); }
+  .msg-links { display: flex; flex-wrap: wrap; gap: 32px; margin-top: 48px; }
+</style>

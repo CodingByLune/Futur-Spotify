@@ -1,0 +1,56 @@
+---
+import site from '../data/site.json';
+const year = new Date().getFullYear();
+---
+<footer class="ftr">
+  <div class="wrap grid ftr-cols">
+    <a class="ftr-kf" href="/" aria-label={`KF — ${site.name}, accueil`}>K<i>F</i></a>
+    <div class="ftr-col">
+      <span class="meta">Navigation</span>
+      <a href="/projets">Projets</a>
+      <a href="/a-propos">À propos</a>
+      <a href="/contact">Contact</a>
+      <a href="/projets/archives">Archives</a>
+    </div>
+    <div class="ftr-col">
+      <span class="meta">Réseaux</span>
+      {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
+      <a href={site.instagram.url} target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      <a href={site.linkedin.url} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </div>
+    <div class="ftr-col">
+      <span class="meta">Légal</span>
+      <a href="/mentions-legales">Mentions légales</a>
+      <a href="/confidentialite">Confidentialité</a>
+      <span class="meta ftr-small">© {year} · {site.location}<br />Aucun cookie · aucun traceur</span>
+    </div>
+  </div>
+  <p class="ftr-sign display" aria-hidden="true">Ferreira-Macias</p>
+</footer>
+
+<style>
+  .ftr { border-top: 1px solid var(--gris-700); padding-top: clamp(64px, 9vw, 96px); overflow: hidden; }
+  .ftr-cols { row-gap: 40px; margin-bottom: clamp(56px, 8vw, 96px); }
+  .ftr-kf { grid-column: span 3; font-family: var(--f-serif); font-size: 2.75rem; line-height: 1; letter-spacing: -0.06em; white-space: nowrap; }
+  .ftr-col { grid-column: span 3; display: grid; align-content: start; gap: 8px; font-size: 0.9375rem; }
+  .ftr-col .meta { margin-bottom: 4px; }
+  .ftr-col a { width: max-content; transition: color var(--dur-s) var(--ease-out); }
+  .ftr-col a:hover { color: var(--cognac-300); }
+  .ftr-small { margin-top: 10px; }
+  .ftr-sign {
+    /* Le nom occupe exactement la largeur utile, quel que soit l'écran */
+    font-size: min(calc((100vw - 2 * var(--margin)) / 10.9), calc((var(--max)) / 10.9));
+    padding-inline: var(--margin);
+    white-space: nowrap;
+    margin-bottom: -0.1em;
+    color: var(--blanc-50);
+  }
+  @media (max-width: 1023px) {
+    .ftr-kf { grid-column: 1 / -1; }
+    .ftr-col { grid-column: span 4; }
+  }
+  @media (max-width: 767px) {
+    .ftr-col { grid-column: span 2; }
+    .ftr-col:last-child { grid-column: 1 / -1; }
+  }
+</style>

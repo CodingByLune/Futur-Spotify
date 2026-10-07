@@ -1,0 +1,115 @@
+{
+  "name": "Kelyan Ferreira-Macias",
+  "nameLines": ["Kelyan", "Ferreira-Macias"],
+  "monogram": "KF",
+  "tagline": "Communication digitale & production visuelle — photo, vidéo, social media.",
+  "specialty": "Spécialité moto",
+  "currentRole": "Responsable Communication — IGOA Moto",
+  "location": "Pays Basque",
+  "seo": {
+    "title": "Kelyan Ferreira-Macias — Communication digitale, photo & vidéo | Pays Basque",
+    "description": "Portfolio de Kelyan Ferreira-Macias : social media, photographie et vidéo, spécialité moto. Projets IGOA Moto, Le Georges et shootings. Pays Basque."
+  },
+  "manifesto": {
+    "before": "Je pense la communication",
+    "accent": "et je fabrique",
+    "after": "les images qui la portent."
+  },
+
+  "email": null,
+  "instagram": { "handle": "@kxre_lune", "url": "https://www.instagram.com/kxre_lune/" },
+  "linkedin": { "label": "Kelyan Ferreira-Macias", "url": "https://www.linkedin.com/in/kelyan-ferreira-macias-751825319/" },
+  "phone": { "value": null, "show": false },
+  "languages": ["Français", "Anglais — niveau C1"],
+
+  "hero": {
+    "image": "shootings-moto/nocturne.jpg",
+    "imageAlt": "Roadster noir photographié de nuit, éclairé en lumière rasante sur fond noir.",
+    "imageMobile": "video-moto/video-4.jpg",
+    "imageMobileAlt": "Roadster noir sur une route mouillée au crépuscule.",
+    "video": null,
+    "videoMobile": null
+  },
+
+  "portrait": null,
+  "cv": null,
+
+  "about": {
+    "draft": true,
+    "lead": "Responsable Communication chez IGOA Moto, je crée les contenus photo, vidéo et graphiques qui font exister les marques sur les réseaux sociaux.",
+    "paragraphs": [
+      "Formé en communication à Bayonne, passé par le graphisme et la PAO, je relie la stratégie à la fabrication des images — avec une spécialité : la moto.",
+      "J'accompagne les entreprises dans le développement de leur visibilité grâce à la création de contenus photo, vidéo et graphiques, à l'animation des réseaux sociaux et à la mise en place de stratégies de communication."
+    ],
+    "interests": ["Univers moto et sports mécaniques", "Production audiovisuelle et storytelling digital", "Voyages et découverte de nouvelles cultures"]
+  },
+
+  "expertises": [
+    {
+      "title": "Social media",
+      "accent": "&",
+      "titleEnd": "communication",
+      "items": ["Animation de comptes Instagram et stratégie digitale", "Reels, stories, publications, rubriques", "Supports de communication print et plateformes de vente"],
+      "tools": ["Canva", "Photoshop", "InDesign"],
+      "image": "shootings-moto/sunset.jpg"
+    },
+    {
+      "title": "Photo",
+      "accent": "&",
+      "titleEnd": "vidéo",
+      "items": ["Shootings produit et lifestyle — spécialité moto", "Montage vertical 9:16 adapté aux codes d'Instagram", "Banques d'images pour les marques"],
+      "tools": ["Lightroom", "Photoshop", "Premiere Pro", "CapCut"],
+      "image": "shootings-moto/nocturne.jpg"
+    },
+    {
+      "title": "Design",
+      "accent": "&",
+      "titleEnd": "direction artistique",
+      "items": ["Identité textile et déclinaisons de logo", "Affiches, encarts, visuels événementiels", "Mise en page print"],
+      "tools": ["Illustrator", "InDesign", "Photoshop"],
+      "image": "shootings-moto/foret.jpg"
+    }
+  ],
+
+  "highlight": {
+    "value": "2 532",
+    "label": "vues sur la publication « Cave du Georges », dont 71,8 % hors abonnés.",
+    "source": "Instagram · Le Georges, Biarritz",
+    "publishable": false
+  },
+
+  "parcours": {
+    "experiences": [
+      { "period": "Depuis janv. 2026", "org": "IGOA Moto", "place": "Anglet", "role": "Responsable Communication" },
+      { "period": "Janv. – août 2025", "org": "Le Georges", "place": "Biarritz", "role": "Community Manager" },
+      { "period": "Avril 2024", "org": "Imprimerie Bixoko", "place": null, "role": "Graphiste PAO" },
+      { "period": "Sept. 2023", "org": "Izar Design", "place": null, "role": "Graphiste" },
+      { "period": "2020 – 2022", "org": "Stages en agences et imprimeries", "place": null, "role": "Assistant communication & graphisme" }
+    ],
+    "formations": [
+      { "period": "En cours", "org": "Bachelor Communication", "place": "Talis Campus Bayonne", "role": null },
+      { "period": null, "org": "BTS Communication", "place": "Talis Campus Bayonne", "role": null }
+    ]
+  },
+
+  "methode": {
+    "steps": [
+      { "title": "Comprendre", "text": null },
+      { "title": "Concevoir", "text": null },
+      { "title": "Produire", "text": null },
+      { "title": "Diffuser", "text": null }
+    ]
+  },
+
+  "legal": {
+    "publisher": "Kelyan Ferreira-Macias",
+    "status": null,
+    "address": null,
+    "siret": null,
+    "contactEmail": null,
+    "host": { "name": null, "address": null, "phone": null },
+    "emailProvider": { "name": "Brevo (Sendinblue SAS)", "address": "France" },
+    "retention": null,
+    "updated": null
+  }
+}

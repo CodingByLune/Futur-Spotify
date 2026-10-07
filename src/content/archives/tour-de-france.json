@@ -1,0 +1,11 @@
+{
+  "title": "Le Grand Départ",
+  "order": 5,
+  "group": "etudes",
+  "label": "Campagne d'affichage",
+  "context": null,
+  "media": [
+    { "src": "archives/tour-de-france.jpg", "alt": "Affiche de campagne « Le Grand Départ — Lille » : peloton cycliste au coucher du soleil.", "kind": "graphic" }
+  ],
+  "rights": { "status": "a-confirmer", "notes": "Marque d'un événement tiers : mention « exercice académique » obligatoire." }
+}

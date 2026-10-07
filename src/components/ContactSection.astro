@@ -1,0 +1,175 @@
+---
+import site from '../data/site.json';
+
+interface Props {
+  headingLevel?: 'h1' | 'h2';
+  index?: string;
+}
+const { headingLevel = 'h2', index = '(06)' } = Astro.props;
+const Heading = headingLevel;
+const objets = ['Mission freelance', 'Collaboration de marque', 'Opportunité professionnelle', 'Autre'];
+const phoneValue = site.phone.value as string | null;
+const phone = site.phone.show && phoneValue ? phoneValue : null;
+---
+<section class="contact section" id="contact" aria-labelledby="contact-titre">
+  <div class="wrap grid">
+    <div class="c-intro">
+      <span class="meta">{index} Contact</span>
+      <Heading class="display-l c-title" id="contact-titre" data-reveal="lines">
+        <span class="line"><span>Parlons de</span></span>
+        <span class="line"><span class="serif">votre projet.</span></span>
+      </Heading>
+      <p class="c-sub" data-reveal>Missions, collaborations de marque, opportunités professionnelles.</p>
+      <ul class="c-links" role="list" data-reveal>
+        {site.email && (
+          <li><a class="cta cta--lg" href={`mailto:${site.email}`}>{site.email} <span class="arrow" aria-hidden="true">↗</span></a></li>
+        )}
+        {phone && <li><a class="cta" href={`tel:${phone.replace(/[^\d+]/g, '')}`}>{phone}</a></li>}
+        <li><a class="cta" href={site.instagram.url} target="_blank" rel="noopener noreferrer">Instagram — {site.instagram.handle} <span class="arrow" aria-hidden="true">↗</span><span class="sr-only">(nouvel onglet)</span></a></li>
+        <li><a class="cta" href={site.linkedin.url} target="_blank" rel="noopener noreferrer">LinkedIn — {site.linkedin.label} <span class="arrow" aria-hidden="true">↗</span><span class="sr-only">(nouvel onglet)</span></a></li>
+      </ul>
+    </div>
+
+    <form
+      class="c-form"
+      action="/api/contact"
+      method="post"
+      novalidate
+      data-contact-form
+      data-fallback={site.email ?? ''}
+      aria-describedby="c-rgpd"
+    >
+      <fieldset class="c-objet">
+        <legend class="meta">Objet</legend>
+        <div class="chips">
+          {objets.map((o, i) => (
+            <label class="chip">
+              <input type="radio" name="objet" value={o} checked={i === 0} />
+              <span>{o}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="c-nom">Nom</label>
+        <input id="c-nom" name="nom" type="text" autocomplete="name" required maxlength="120" aria-describedby="err-nom" />
+        <span class="field-error" id="err-nom" data-error-for="nom" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label for="c-email">Email</label>
+        <input id="c-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="200" aria-describedby="err-email" />
+        <span class="field-error" id="err-email" data-error-for="email" aria-live="polite"></span>
+      </div>
+      <div class="field field--area">
+        <label for="c-message">Message</label>
+        <textarea id="c-message" name="message" rows="5" required minlength="10" maxlength="5000" aria-describedby="err-message"></textarea>
+        <span class="field-error" id="err-message" data-error-for="message" aria-live="polite"></span>
+      </div>
+
+      <!-- Anti-spam sans traceur : champ piège invisible + délai minimal de remplissage -->
+      <div class="hp" aria-hidden="true">
+        <label for="c-site">Ne pas remplir ce champ</label>
+        <input id="c-site" name="site_web" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <input type="hidden" name="started" value="" />
+
+      <p class="c-rgpd" id="c-rgpd">
+        Vos données (nom, email, message) servent uniquement à répondre à votre demande et ne sont ni stockées sur ce site, ni
+        cédées. <a href="/confidentialite">Politique de confidentialité</a>.
+      </p>
+
+      <div class="c-actions">
+        <button class="c-submit" type="submit"><span data-submit-label>Envoyer le message</span> <span class="arrow" aria-hidden="true">→</span></button>
+        <span class="meta">Aucun cookie · aucun traceur</span>
+      </div>
+      <p class="form-status" data-form-status role="status" tabindex="-1"></p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact { border-top: 1px solid var(--gris-700); }
+  .c-intro { grid-column: 1 / span 6; }
+  .c-title { margin-top: 28px; }
+  .c-sub { color: var(--gris-300); margin-top: 28px; max-width: 32ch; }
+  .c-links { display: grid; gap: 14px; margin-top: 48px; justify-items: start; }
+  .c-form { grid-column: 8 / span 5; padding-top: 24px; }
+
+  .c-objet { border: 0; }
+  .c-objet legend { margin-bottom: 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { position: relative; }
+  .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .chip span {
+    display: inline-block;
+    padding: 9px 12px;
+    border: 1px solid var(--gris-600);
+    font-family: var(--f-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gris-300);
+    transition: border-color var(--dur-s) var(--ease-out), color var(--dur-s) var(--ease-out);
+  }
+  .chip input:checked + span { border-color: var(--cognac-500); color: var(--blanc-50); }
+  .chip input:focus-visible + span { outline: 2px solid var(--cognac-500); outline-offset: 3px; }
+
+  .field { position: relative; display: grid; padding-top: 26px; border-bottom: 1px solid var(--gris-600); transition: border-color var(--dur-s) var(--ease-out); }
+  .field:focus-within { border-color: var(--cognac-500); }
+  .field.is-invalid { border-color: var(--erreur); }
+  .field label { font-size: 0.9375rem; color: var(--gris-400); }
+  .field:focus-within label { color: var(--blanc-50); }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 8px 0 12px;
+    background: transparent;
+    border: 0;
+    outline: none;
+    font-size: 1.0625rem;
+    color: var(--blanc-50);
+    resize: vertical;
+  }
+  .field-error { position: absolute; right: 0; top: 30px; font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.04em; color: var(--erreur); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .c-rgpd { margin-top: 20px; font-size: 0.8125rem; line-height: 1.55; color: var(--gris-400); max-width: 52ch; }
+  .c-rgpd a { text-decoration: underline; text-underline-offset: 3px; }
+  .c-actions { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 32px; flex-wrap: wrap; }
+  .c-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--gris-600);
+    font-size: 1.25rem;
+    transition: border-color var(--dur-s) var(--ease-out);
+  }
+  .c-submit .arrow { color: var(--cognac-500); transition: transform var(--dur-s) var(--ease-out); }
+  .c-submit:hover { border-color: var(--cognac-500); }
+  .c-submit:hover .arrow { transform: translateX(6px); }
+  .c-submit:disabled { color: var(--gris-500); border-color: var(--gris-700); cursor: progress; }
+  .form-status { margin-top: 18px; font-size: 0.9375rem; min-height: 1.5em; }
+  .form-status:focus { outline: none; }
+  .form-status:global(.is-ok) { color: var(--cognac-300); }
+  .form-status:global(.is-error) { color: var(--erreur); }
+
+  @media (max-width: 1023px) {
+    .c-intro, .c-form { grid-column: 1 / -1; }
+    .c-form { padding-top: 56px; }
+  }
+  @media (max-width: 767px) {
+    .c-submit {
+      width: 100%;
+      justify-content: center;
+      padding: 16px;
+      border: 0;
+      background: var(--blanc-50);
+      color: var(--noir-950);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .c-submit .arrow { color: var(--noir-950); }
+    .c-actions .meta { width: 100%; text-align: center; }
+  }
+</style>

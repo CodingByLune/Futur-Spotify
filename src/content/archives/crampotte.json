@@ -1,0 +1,12 @@
+{
+  "title": "Concours Crampotte",
+  "order": 1,
+  "group": "etudes",
+  "label": "Affiche · 2 versions",
+  "context": null,
+  "media": [
+    { "src": "archives/crampotte-1.jpg", "alt": "Affiche du Festival de Théâtre au Port des Pêcheurs de Biarritz, version 1 : phare et mer.", "kind": "graphic" },
+    { "src": "archives/crampotte-2.jpg", "alt": "Affiche du Festival de Théâtre au Port des Pêcheurs de Biarritz, version 2.", "kind": "graphic" }
+  ],
+  "rights": { "status": "a-confirmer", "notes": "Origine des images utilisées et résultat du concours à préciser." }
+}

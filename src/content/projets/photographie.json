@@ -1,0 +1,42 @@
+{
+  "title": "Photographie",
+  "order": 5,
+  "featured": false,
+  "template": "serie",
+  "type": "perso",
+  "year": null,
+  "disciplines": ["photo"],
+  "collection": null,
+  "tools": ["Lightroom"],
+  "summary": "Paysages, nuits et nature : explorer comment l'image peut éveiller des émotions.",
+  "context": null,
+  "cover": {
+    "src": "photographie/fleur.jpg",
+    "alt": "Fleurs rouges en contre-jour sur un rocher, sous un ciel gris.",
+    "kind": "photo"
+  },
+  "chapters": [
+    {
+      "title": "Paysage",
+      "layout": "grid",
+      "media": [
+        { "src": "photographie/silhouette-crepuscule.jpg", "alt": "Silhouette d'une villa à tourelles au crépuscule.", "kind": "photo", "ratio": "1/1" },
+        { "src": "photographie/ciel-etoile-mer.jpg", "alt": "Ciel étoilé au-dessus de la mer, quelques lumières sur la côte.", "kind": "photo", "ratio": "1/1" },
+        { "src": "photographie/skyline.jpg", "alt": "Ligne d'immeubles au bord d'un plan d'eau, en fin de journée.", "kind": "photo", "ratio": "1/1" },
+        { "src": "photographie/gratte-ciel.jpg", "alt": "Gratte-ciel éclairés au crépuscule, vus en contre-plongée.", "kind": "photo", "ratio": "1/1" },
+        { "src": "photographie/lune.jpg", "alt": "Croissant de lune dans un ciel nocturne nuageux.", "kind": "photo", "ratio": "1/1" },
+        { "src": "photographie/soleil-nuages.jpg", "alt": "Soleil voilé perçant des nuages sombres.", "kind": "photo", "ratio": "1/1" }
+      ]
+    },
+    {
+      "title": "Nature",
+      "layout": "pair",
+      "media": [
+        { "src": "photographie/fleur.jpg", "alt": "Fleurs rouges en contre-jour sur un rocher.", "kind": "photo", "ratio": "4/5" },
+        { "src": "photographie/oiseau.jpg", "alt": "Moineau perché sur une branche fine, fond bleu.", "kind": "photo", "ratio": "1/1" }
+      ]
+    }
+  ],
+  "rights": { "owner": "Kelyan Ferreira-Macias", "status": "personnel" },
+  "next": "igoa-moto"
+}

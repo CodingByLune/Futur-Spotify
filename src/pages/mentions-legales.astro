@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Legal from '../components/Legal.astro';
+import site from '../data/site.json';
+
+const L = site.legal;
+const todo = (label: string) => `[À compléter : ${label}]`;
+---
+<Base title="Mentions légales" noindex>
+  <Legal title="Mentions légales" updated={L.updated}>
+    <h2>Éditeur du site</h2>
+    <p>{L.publisher}</p>
+    <p class:list={[!L.status && 'todo']}>{L.status ?? todo('statut (particulier, micro-entrepreneur…)')}</p>
+    {(L.siret || !L.status || L.status !== 'particulier') && (
+      <p class:list={[!L.siret && 'todo']}>{L.siret ? `SIRET : ${L.siret}` : todo('SIRET si activité professionnelle')}</p>
+    )}
+    <p class:list={[!L.address && 'todo']}>{L.address ?? todo('adresse de domiciliation')}</p>
+    <p class:list={[!L.contactEmail && 'todo']}>{L.contactEmail ? <>Contact : <a href={`mailto:${L.contactEmail}`}>{L.contactEmail}</a></> : todo('email de contact')}</p>
+
+    <h2>Directeur de la publication</h2>
+    <p>{L.publisher}</p>
+
+    <h2>Hébergement</h2>
+    <p class:list={[!L.host.name && 'todo']}>{L.host.name ?? todo("nom de l'hébergeur")}</p>
+    <p class:list={[!L.host.address && 'todo']}>{L.host.address ?? todo("adresse de l'hébergeur")}</p>
+    <p class:list={[!L.host.phone && 'todo']}>{L.host.phone ?? todo("téléphone de l'hébergeur")}</p>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>
+      Les photographies, vidéos, textes et créations graphiques présentés sur ce site sont protégés par le droit d'auteur.
+      Toute reproduction, représentation ou diffusion, totale ou partielle, sans autorisation écrite préalable est interdite.
+    </p>
+    <p>
+      Les travaux réalisés pour des entreprises sont présentés avec leur accord. Les marques, logos et modèles cités
+      appartiennent à leurs détenteurs respectifs. Les projets présentés dans la section Archives sont des exercices
+      académiques, sans lien avec les marques et œuvres qu'ils évoquent.
+    </p>
+
+    <h2>Données personnelles</h2>
+    <p>Voir la <a href="/confidentialite">politique de confidentialité</a>.</p>
+  </Legal>
+</Base>

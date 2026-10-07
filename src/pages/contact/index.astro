@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import ContactSection from '../../components/ContactSection.astro';
+---
+<Base
+  title="Contact"
+  description="Contacter Kelyan Ferreira-Macias : missions freelance, collaborations de marque, opportunités professionnelles."
+  floatingContact={false}
+>
+  <div class="contact-page">
+    <ContactSection headingLevel="h1" index="" />
+  </div>
+</Base>
+
+<style>
+  .contact-page { padding-top: var(--header-h); }
+  .contact-page :global(.contact) { border-top: 0; }
+</style>

@@ -1,0 +1,7 @@
+Polices auto-hébergées (sous-ensemble latin, fichiers issus de Google Fonts).
+Toutes sont distribuées sous licence SIL Open Font License 1.1 (https://openfontlicense.org).
+
+- Archivo — Omnibus-Type
+- Inter — Rasmus Andersson
+- Instrument Serif — Instrument
+- Geist Mono — Vercel

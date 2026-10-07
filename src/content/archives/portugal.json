@@ -1,0 +1,11 @@
+{
+  "title": "Visitez le Portugal",
+  "order": 4,
+  "group": "etudes",
+  "label": "Affiche touristique",
+  "context": null,
+  "media": [
+    { "src": "archives/portugal.jpg", "alt": "Affiche touristique « Visitez le Portugal » avec un bandeau de photos.", "kind": "graphic" }
+  ],
+  "rights": { "status": "a-confirmer", "notes": "Origine des photos à préciser." }
+}

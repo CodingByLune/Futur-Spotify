@@ -1,0 +1,11 @@
+{
+  "title": "Fêtes de Bayonne",
+  "order": 2,
+  "group": "etudes",
+  "label": "Affiche",
+  "context": null,
+  "media": [
+    { "src": "archives/fetes-de-bayonne.jpg", "alt": "Affiche des Fêtes de Bayonne : titre manuscrit blanc sur une foule en rouge et blanc.", "kind": "graphic" }
+  ],
+  "rights": { "status": "a-confirmer", "notes": "Origine de la photo de foule à préciser." }
+}

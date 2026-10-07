@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import { resolveImage } from '../lib/media';
+
+const image = resolveImage('shootings-moto/foret.jpg');
+---
+<Base title="Page introuvable" noindex>
+  <section class="nf">
+    {image && <div class="nf-media" aria-hidden="true"><Img image={image} alt="" sizes="100vw" /></div>}
+    <div class="nf-content wrap">
+      <p class="meta">Erreur 404</p>
+      <h1 class="display-l nf-title">Cette page n'existe pas <span class="serif">(ou plus).</span></h1>
+      <div class="nf-links">
+        <a class="cta cta--lg" href="/projets">Voir les projets <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="cta" href="/">Retour à l'accueil</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { position: relative; min-height: 100svh; display: flex; align-items: flex-end; overflow: hidden; }
+  .nf-media { position: absolute; inset: 0; }
+  .nf-media :global(img) { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
+  .nf-content { position: relative; padding-bottom: clamp(40px, 8vh, 80px); }
+  .nf-title { margin-top: 18px; max-width: 14ch; }
+  .nf-links { display: flex; flex-wrap: wrap; gap: 32px; margin-top: 40px; }
+</style>

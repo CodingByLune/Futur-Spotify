@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import Legal from '../components/Legal.astro';
+import site from '../data/site.json';
+
+const L = site.legal;
+const todo = (label: string) => `[À compléter : ${label}]`;
+---
+<Base title="Politique de confidentialité" noindex>
+  <Legal title="Confidentialité" updated={L.updated}>
+    <h2>En résumé</h2>
+    <ul>
+      <li>Ce site ne dépose <strong>aucun cookie</strong> et n'utilise <strong>aucun outil de mesure d'audience ni de traceur</strong>.</li>
+      <li>Les polices de caractères, images et vidéos sont hébergées sur le site lui-même : aucun service tiers n'est appelé pendant votre visite.</li>
+      <li>Aucune publication Instagram ou vidéo externe n'est intégrée : les liens vers Instagram ou LinkedIn sont de simples liens, qui ne s'activent que si vous cliquez.</li>
+      <li>Les seules données collectées sont celles que vous saisissez dans le formulaire de contact.</li>
+    </ul>
+
+    <h2>Responsable du traitement</h2>
+    <p>{L.publisher}</p>
+    <p class:list={[!L.contactEmail && 'todo']}>{L.contactEmail ? <>Contact : <a href={`mailto:${L.contactEmail}`}>{L.contactEmail}</a></> : todo('email de contact')}</p>
+
+    <h2>Formulaire de contact</h2>
+    <p><strong>Données collectées :</strong> nom, adresse email, objet et contenu du message.</p>
+    <p><strong>Finalité :</strong> répondre à votre demande (mission, collaboration, opportunité professionnelle ou autre).</p>
+    <p><strong>Base légale :</strong> intérêt légitime à répondre aux demandes reçues, ou mesures précontractuelles prises à votre demande.</p>
+    <p>
+      <strong>Fonctionnement :</strong> votre message est transmis par email au responsable du traitement via le service
+      d'envoi {L.emailProvider.name}. Il n'est pas enregistré dans une base de données du site.
+    </p>
+    <p><strong>Destinataire :</strong> uniquement le responsable du traitement. Vos données ne sont ni vendues, ni cédées, ni utilisées à des fins commerciales.</p>
+    <p class:list={[!L.retention && 'todo']}><strong>Durée de conservation :</strong> {L.retention ?? todo('durée de conservation des emails reçus')}</p>
+
+    <h2>Hébergement et journaux techniques</h2>
+    <p>
+      Comme tout site web, l'hébergeur peut enregistrer des journaux techniques (adresse IP, date, page demandée) pour
+      assurer la sécurité et le bon fonctionnement du service.
+    </p>
+    <p class:list={[!L.host.name && 'todo']}>Hébergeur : {L.host.name ?? todo("nom de l'hébergeur et localisation des données")}</p>
+
+    <h2>Stockage local</h2>
+    <p>
+      Si vous choisissez l'affichage « Liste » sur la page Projets, ce choix est mémorisé dans votre navigateur
+      (stockage local, sans cookie). Cette information ne quitte pas votre appareil.
+    </p>
+
+    <h2>Vos droits</h2>
+    <p>
+      Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition, de limitation et de portabilité de
+      vos données. Pour les exercer, écrivez à l'adresse de contact ci-dessus.
+    </p>
+    <p>
+      Vous pouvez également introduire une réclamation auprès de la CNIL :
+      <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>.
+    </p>
+  </Legal>
+</Base>

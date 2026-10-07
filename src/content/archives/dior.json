@@ -1,0 +1,11 @@
+{
+  "title": "Affiche Dior",
+  "order": 7,
+  "group": "detournement",
+  "label": "Exercice de détournement",
+  "context": null,
+  "media": [
+    { "src": "archives/dior.jpg", "alt": "Visuel de parfum au nom de Christian Dior : portrait féminin dans un cadre ovale.", "kind": "graphic" }
+  ],
+  "rights": { "status": "a-confirmer", "notes": "Marque de tiers." }
+}

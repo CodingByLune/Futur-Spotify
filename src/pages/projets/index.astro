@@ -1,0 +1,135 @@
+---
+import Base from '../../layouts/Base.astro';
+import Img from '../../components/Img.astro';
+import { getProjets, preparer, disciplineLabel, DISCIPLINES, href } from '../../lib/projets';
+
+const projets = (await getProjets()).map((p) => ({ p, ...preparer(p) }));
+const count = (tag: string) => projets.filter(({ p }) => p.data.disciplines.includes(tag as never) || p.data.collection === tag).length;
+const filters = [
+  { key: 'tout', label: 'Tout', n: projets.length },
+  ...Object.entries(DISCIPLINES).map(([key, label]) => ({ key, label, n: count(key) })).filter((f) => f.n > 0),
+];
+const motoCount = count('moto');
+---
+<Base title="Projets — photo, vidéo & social media" description="Tous les projets de Kelyan Ferreira-Macias : social media, photographie, vidéo, design graphique et communication. Collection moto.">
+  <section class="wrap idx">
+    <div class="idx-head">
+      <h1 class="display-l">Projets</h1>
+      <div class="idx-views meta" role="group" aria-label="Affichage">
+        <button type="button" data-view="images" aria-pressed="true">Images</button>
+        <button type="button" data-view="liste" aria-pressed="false">Liste</button>
+      </div>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filtrer les projets" data-filters>
+      {filters.map((f, i) => (
+        <button type="button" data-filter={f.key} aria-pressed={i === 0 ? 'true' : 'false'}>{f.label}<sup>{String(f.n).padStart(2, '0')}</sup></button>
+      ))}
+      {motoCount > 0 && (
+        <button type="button" class="f-moto" data-filter="moto" aria-pressed="false">— Collection Moto<sup>{String(motoCount).padStart(2, '0')}</sup></button>
+      )}
+      <span class="sr-only" data-filter-status aria-live="polite"></span>
+    </div>
+
+    <div class="tiles" data-view-container data-mode="images" data-hover-list>
+      <ol class="tiles-list" role="list">
+        {projets.map(({ p, cover }, i) => {
+          const tags = [...p.data.disciplines, p.data.collection].filter(Boolean).join(' ');
+          const disc = p.data.disciplines.map(disciplineLabel).join(' · ') + (p.data.collection ? ' · Moto' : '');
+          return (
+            <li class="tile" data-tags={tags} data-hover-item={p.id} style={`--i:${i % 2}`}>
+              <a href={href(p.id)} class="tile-link" data-cursor="Voir">
+                <div class:list={['media tile-media', !cover && 'tile-media--empty']}>
+                  {cover ? (
+                    <>
+                      {cover.pending && <span class="badge-preview">Aperçu · droits à demander</span>}
+                      <Img image={cover.image} alt="" sizes="(max-width: 767px) 100vw, 50vw" vt={`projet-${p.id}`} fit={cover.kind === 'graphic' ? 'contain' : 'cover'} />
+                    </>
+                  ) : (
+                    <span class="display-l">{p.data.title}</span>
+                  )}
+                </div>
+                <div class="tile-row">
+                  <span class="num">{String(i + 1).padStart(2, '0')}</span>
+                  <h2 class="tile-title">{p.data.title}</h2>
+                  <span class="meta tile-disc">{disc}</span>
+                  <span class="meta tile-year">{p.data.year ?? ''}</span>
+                </div>
+              </a>
+            </li>
+          );
+        })}
+        <li class="tile tile--archives" data-tags="archives">
+          <a href="/projets/archives" class="tile-arch">
+            <span class="meta">Archives</span>
+            <span class="tile-arch-title">Projets <span class="serif">académiques</span></span>
+            <span class="tile-arch-txt">Concours, affiches et exercices réalisés en formation.</span>
+            <span class="cta">Voir les archives <span class="arrow" aria-hidden="true">→</span></span>
+          </a>
+        </li>
+      </ol>
+      <div class="list-preview" data-hover-preview aria-hidden="true">
+        {projets.map(({ p, cover }) => cover && (
+          <div class="list-preview-img" data-preview-key={p.id}><Img image={cover.image} alt="" sizes="300px" /></div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .idx { padding-top: calc(var(--header-h) + clamp(56px, 9vw, 120px)); padding-bottom: var(--section); }
+  .idx-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+  .idx-views { display: flex; gap: 20px; }
+  .idx-views button, .filters button { color: var(--gris-400); padding-block: 6px; border-bottom: 1px solid transparent; transition: color var(--dur-s) var(--ease-out), border-color var(--dur-s) var(--ease-out); }
+  .idx-views button[aria-pressed='true'], .filters button[aria-pressed='true'] { color: var(--blanc-50); border-color: var(--cognac-500); }
+  .idx-views button:hover, .filters button:hover { color: var(--blanc-50); }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px 26px; margin: 28px 0 clamp(40px, 6vw, 64px); font-size: 1rem; }
+  .filters sup { font-family: var(--f-mono); font-size: 0.625rem; margin-left: 3px; }
+  .filters .f-moto { color: var(--cognac-300); }
+
+  .tiles { position: relative; }
+  .tiles-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(48px, 6vw, 72px) var(--gutter); align-items: start; }
+  .tile[hidden] { display: none; }
+  .tile:nth-child(even) { margin-top: clamp(0px, 6vw, 96px); }
+  .tile-media { aspect-ratio: 4 / 3; }
+  .tile-media--empty { display: grid; place-items: center; padding: 24px; text-align: center; background: var(--noir-900); }
+  .tile-media :global(img) { transition: transform 900ms var(--ease-out); }
+  @media (hover: hover) { .tile-link:hover .tile-media :global(img) { transform: scale(1.03); } }
+  .tile-row { display: grid; grid-template-columns: auto 1fr auto; gap: 6px 14px; align-items: baseline; margin-top: 16px; }
+  .tile-title { font-family: var(--f-display); font-stretch: 110%; font-weight: 500; font-size: clamp(1.5rem, 2.4vw, 2rem); letter-spacing: -0.03em; line-height: 1.05; }
+  .tile-disc { grid-column: 2 / -1; }
+  .tile-year { grid-column: 3; grid-row: 1; }
+  .tile-arch { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; aspect-ratio: 4 / 3; padding: clamp(24px, 3vw, 40px); border: 1px solid var(--gris-700); transition: border-color var(--dur-s) var(--ease-out); }
+  .tile-arch:hover { border-color: var(--cognac-700); }
+  .tile-arch-title { font-family: var(--f-display); font-stretch: 110%; font-weight: 500; font-size: clamp(1.75rem, 3vw, 2.5rem); letter-spacing: -0.03em; line-height: 1; }
+  .tile-arch-txt { color: var(--gris-400); font-size: 0.9375rem; }
+  .tile-arch .cta { align-self: flex-start; }
+
+  /* Vue liste */
+  .tiles[data-mode='liste'] .tiles-list { grid-template-columns: 1fr; gap: 0; }
+  .tiles[data-mode='liste'] .tile { margin-top: 0; border-top: 1px solid var(--gris-700); }
+  .tiles[data-mode='liste'] .tile:last-child { border-bottom: 1px solid var(--gris-700); }
+  .tiles[data-mode='liste'] .tile-media { display: none; }
+  .tiles[data-mode='liste'] .tile-row { grid-template-columns: 60px 1fr minmax(0, 360px) 80px; margin: 0; padding-block: 22px; transition: background-color var(--dur-s) var(--ease-out), padding var(--dur-s) var(--ease-out); }
+  .tiles[data-mode='liste'] .tile-link:hover .tile-row { background: var(--noir-800); padding-inline: 16px; }
+  .tiles[data-mode='liste'] .tile-disc { grid-column: 3; grid-row: 1; }
+  .tiles[data-mode='liste'] .tile-year { grid-column: 4; text-align: right; }
+  .tiles[data-mode='liste'] .tile-arch { aspect-ratio: auto; flex-direction: row; align-items: baseline; border: 0; padding: 22px 0; }
+  .tiles[data-mode='liste'] .tile-arch-txt { display: none; }
+  .list-preview { position: absolute; left: 0; top: 0; width: 260px; height: 200px; margin: -100px 0 0 24px; pointer-events: none; opacity: 0; z-index: 3; transition: opacity var(--dur-m) var(--ease-out); }
+  .tiles[data-mode='liste'] .list-preview.is-on { opacity: 1; }
+  .list-preview-img { position: absolute; inset: 0; opacity: 0; transition: opacity var(--dur-s) var(--ease-out); }
+  .list-preview-img.is-on { opacity: 1; }
+  .list-preview-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  @media (max-width: 767px) {
+    .tiles-list { grid-template-columns: 1fr; }
+    .tile:nth-child(even) { margin-top: 0; }
+    .tile-media { aspect-ratio: 4 / 5; }
+    .tiles[data-mode='liste'] .tile-row { grid-template-columns: 40px 1fr; }
+    .tiles[data-mode='liste'] .tile-disc { grid-column: 2; grid-row: 2; }
+    .tiles[data-mode='liste'] .tile-year { display: none; }
+    .list-preview { display: none; }
+  }
+</style>
