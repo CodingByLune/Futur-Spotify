@@ -1,0 +1,157 @@
+---
+import site from '../data/site.json';
+
+interface Props {
+  overlay?: boolean;
+  projectNav?: { label: string; position: string } | null;
+}
+const { overlay = false, projectNav = null } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = [
+  { href: '/projets', label: 'Projets' },
+  { href: '/a-propos', label: 'À propos' },
+  { href: '/contact', label: 'Contact' },
+];
+const isCurrent = (h: string) => path === h || (h === '/projets' && path.startsWith('/projets'));
+---
+<header class:list={['hdr', overlay && 'hdr--overlay']} data-header>
+  <div class="hdr-in">
+    <a class="kf" href="/" aria-label={`KF — ${site.name}, accueil`}>K<i>F</i></a>
+
+    {projectNav ? (
+      <a class="hdr-back" href="/projets"><span aria-hidden="true">←</span> Tous les projets</a>
+    ) : (
+      <nav class="hdr-nav" aria-label="Navigation principale">
+        <ul role="list">
+          {links.map((l) => (
+            <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
+    <span class="meta hdr-meta">{projectNav ? projectNav.position : `${site.location} — FR`}</span>
+
+    <button class="hdr-menu" type="button" aria-expanded="false" aria-controls="menu-mobile" data-menu-open>Menu</button>
+  </div>
+  {projectNav && <div class="hdr-progress" data-progress aria-hidden="true"></div>}
+</header>
+
+<div class="mmenu" id="menu-mobile" role="dialog" aria-modal="true" aria-label="Menu" data-menu hidden>
+  <div class="mmenu-top">
+    <a class="kf" href="/" aria-label={`KF — ${site.name}, accueil`}>K<i>F</i></a>
+    <button class="hdr-menu" type="button" data-menu-close>Fermer</button>
+  </div>
+  <nav class="mmenu-nav" aria-label="Navigation mobile">
+    <ul role="list">
+      {links.map((l, i) => (
+        <li style={`--i:${i}`}>
+          <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>
+            <span class="num">{String(i + 1).padStart(2, '0')}</span><span class="mmenu-label">{l.label}</span>
+          </a>
+        </li>
+      ))}
+      <li style="--i:3"><a class="mmenu-small" href="/projets/archives"><span class="num">04</span><span>Archives académiques</span></a></li>
+    </ul>
+  </nav>
+  <div class="mmenu-contact">
+    {site.email && (<><span class="meta">Écrire</span><a href={`mailto:${site.email}`}>{site.email}</a></>)}
+    <div class="mmenu-social">
+      <a href={site.instagram.url} target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      <a href={site.linkedin.url} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hdr {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    transition: transform var(--dur-m) var(--ease-out), background-color var(--dur-m) var(--ease-out);
+  }
+  .hdr-in {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: var(--header-h);
+    padding-inline: var(--margin);
+  }
+  .hdr.is-solid {
+    background: rgb(11 11 12 / 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .hdr.is-hidden { transform: translateY(-100%); }
+  .hdr--overlay:not(.is-solid) { background: linear-gradient(180deg, rgb(11 11 12 / 0.55), transparent); }
+
+  .kf {
+    font-family: var(--f-serif);
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    justify-self: start;
+    white-space: nowrap;
+  }
+  .hdr-nav ul { display: flex; gap: 36px; }
+  .hdr-nav a, .hdr-back { position: relative; font-size: 0.9375rem; padding-block: 6px; }
+  .hdr-nav a::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: var(--cognac-500);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-s) var(--ease-out);
+  }
+  .hdr-nav a:hover::after, .hdr-nav a[aria-current='page']::after { transform: scaleX(1); }
+  .hdr-back span { color: var(--cognac-500); }
+  .hdr-meta { justify-self: end; color: var(--gris-300); }
+  .hdr-menu { display: none; justify-self: end; font-size: 0.9375rem; padding: 10px 0; border-bottom: 1px solid var(--gris-500); }
+  .hdr-progress {
+    position: absolute;
+    left: 0; top: 0;
+    height: 2px;
+    width: 100%;
+    background: var(--cognac-500);
+    transform: scaleX(var(--p, 0));
+    transform-origin: left;
+  }
+
+  @media (max-width: 767px) {
+    .hdr-in { grid-template-columns: 1fr auto; }
+    .hdr-nav, .hdr-meta { display: none; }
+    .hdr-back { display: none; }
+    .hdr-menu { display: inline-block; }
+    .kf { font-size: 1.75rem; }
+  }
+
+  /* Menu mobile plein écran */
+  .mmenu {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px max(32px, env(safe-area-inset-bottom));
+    background: var(--noir-900);
+    opacity: 0;
+    transition: opacity var(--dur-m) var(--ease-in-out);
+  }
+  .mmenu[hidden] { display: none; }
+  .mmenu.is-open { opacity: 1; }
+  .mmenu-top { display: flex; justify-content: space-between; align-items: center; height: var(--header-h); }
+  .mmenu-top .hdr-menu { display: inline-block; }
+  .mmenu-nav { margin-top: 10vh; }
+  .mmenu-nav li { border-bottom: 1px solid var(--gris-700); opacity: 0; transform: translateY(16px); transition: opacity var(--dur-m) var(--ease-out), transform var(--dur-m) var(--ease-out); transition-delay: calc(80ms + var(--i) * 60ms); }
+  .mmenu-nav li:last-child { border-bottom: 0; }
+  .mmenu.is-open .mmenu-nav li { opacity: 1; transform: none; }
+  .mmenu-nav a { display: flex; align-items: baseline; gap: 14px; padding-block: 14px; }
+  .mmenu-label { font-family: var(--f-display); font-stretch: 112%; font-weight: 600; font-size: clamp(2.5rem, 12vw, 3.25rem); letter-spacing: -0.03em; line-height: 1; }
+  .mmenu-nav a[aria-current='page'] .num { color: var(--cognac-500); }
+  .mmenu-nav a:not([aria-current='page']) .num { color: var(--gris-400); }
+  .mmenu-small { font-size: 1.25rem; color: var(--gris-300); }
+  .mmenu-contact { margin-top: auto; display: grid; gap: 10px; font-size: 1.0625rem; }
+  .mmenu-social { display: flex; gap: 24px; margin-top: 8px; }
+</style>

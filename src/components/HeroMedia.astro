@@ -1,0 +1,62 @@
+---
+/**
+ * Média du hero : image dédiée desktop (paysage) et mobile (vertical), ou vidéo si fournie.
+ * Les vidéos se placent dans public/videos/ et se déclarent dans src/data/site.json (hero.video / hero.videoMobile).
+ */
+import { getImage } from 'astro:assets';
+import site from '../data/site.json';
+import { resolveImage, publicFileExists } from '../lib/media';
+
+const desktop = resolveImage(site.hero.image);
+const mobile = resolveImage(site.hero.imageMobile) ?? desktop;
+if (!desktop || !mobile) throw new Error('Image du hero introuvable : vérifie hero.image dans src/data/site.json');
+
+const fmt = async (img: typeof desktop, widths: number[], format: 'avif' | 'webp' | 'jpeg') => {
+  const usable = widths.filter((w) => w <= img.width);
+  const list = usable.length ? usable : [img.width];
+  const out = await Promise.all(list.map((w) => getImage({ src: img, width: w, format, quality: 78 })));
+  return out.map((o, i) => `${o.src} ${list[i]}w`).join(', ');
+};
+const dW = [960, 1440, 1920, 2560];
+const mW = [480, 720, 960, 1170];
+const sources = {
+  mAvif: await fmt(mobile, mW, 'avif'),
+  mWebp: await fmt(mobile, mW, 'webp'),
+  dAvif: await fmt(desktop, dW, 'avif'),
+  dWebp: await fmt(desktop, dW, 'webp'),
+};
+const fallback = await getImage({ src: desktop, width: Math.min(1920, desktop.width), format: 'jpeg', quality: 78 });
+const video = publicFileExists(site.hero.video) ? `/${site.hero.video}` : null;
+const videoMobile = publicFileExists(site.hero.videoMobile) ? `/${site.hero.videoMobile}` : null;
+---
+<div class="hm">
+  <picture>
+    <source media="(max-width: 767px)" type="image/avif" srcset={sources.mAvif} sizes="100vw" />
+    <source media="(max-width: 767px)" type="image/webp" srcset={sources.mWebp} sizes="100vw" />
+    <source type="image/avif" srcset={sources.dAvif} sizes="100vw" />
+    <source type="image/webp" srcset={sources.dWebp} sizes="100vw" />
+    <img
+      src={fallback.src}
+      alt={site.hero.imageAlt}
+      width={desktop.width}
+      height={desktop.height}
+      fetchpriority="high"
+      loading="eager"
+      decoding="sync"
+    />
+  </picture>
+  {(video || videoMobile) && (
+    <video class="hm-video" data-autoplay-visible muted loop playsinline preload="metadata" aria-hidden="true">
+      {videoMobile && <source media="(max-width: 767px)" src={videoMobile} type="video/mp4" />}
+      {video && <source src={video} type="video/mp4" />}
+    </video>
+  )}
+</div>
+
+<style>
+  .hm, .hm picture, .hm img, .hm-video { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hm img, .hm-video { object-fit: cover; object-position: center 60%; }
+  .hm img { filter: brightness(0.85); }
+  .js-motion .hm { animation: hero-zoom 1400ms var(--ease-out) both; }
+  @keyframes hero-zoom { from { transform: scale(1.06); } to { transform: none; } }
+</style>

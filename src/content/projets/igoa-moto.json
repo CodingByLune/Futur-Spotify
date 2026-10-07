@@ -1,0 +1,112 @@
+{
+  "title": "IGOA Moto",
+  "order": 1,
+  "featured": true,
+  "template": "etude",
+  "type": "pro",
+  "client": "IGOA Moto",
+  "location": "Anglet",
+  "roleDisplayed": "Responsable Communication",
+  "roleSource": "Chargé de communication / Photographe — IGOA MOTO — Jan. 2026 (Alternance) [CV]",
+  "period": "Depuis janvier 2026",
+  "year": "2026",
+  "disciplines": ["social", "video", "photo", "design", "communication"],
+  "collection": "moto",
+  "tools": ["CapCut"],
+  "summary": "Contenus Instagram, vidéo, photo et supports de vente pour une concession moto.",
+  "context": null,
+  "deliverables": "Reels, publications, visuels d'occasion, photos, page Leboncoin",
+  "links": [{ "label": "Instagram @igoamoto", "href": "https://www.instagram.com/igoamoto/" }],
+  "cover": {
+    "src": "igoa-moto/photo-concession.jpg",
+    "alt": "Moto roadster rouge et noire photographiée devant le bardage métallique de la concession.",
+    "kind": "photo"
+  },
+  "chapters": [
+    {
+      "title": "Reel",
+      "accent": "promotionnel QJ Motor SRK 921 RR",
+      "layout": "sticky",
+      "points": [
+        "Création d'un reel promotionnel pour la QJ Motor SRK 921 RR",
+        "Mise en valeur du design et des détails de la moto",
+        "Montage dynamique adapté aux codes d'Instagram",
+        "Format vertical 9:16, qualité vidéo 4K",
+        "Objectif : renforcer la visibilité digitale d'IGOA Moto"
+      ],
+      "tools": ["CapCut"],
+      "media": [
+        { "src": "igoa-moto/reel-qj.jpg", "alt": "Extrait du reel : carénage rouge de la QJ Motor SRK 921 RR en gros plan.", "kind": "video", "ratio": "9/16", "href": "https://www.instagram.com/igoamoto/reel/DUJCQ5sgtsm/" },
+        { "src": "igoa-moto/qj-photo.jpg", "alt": "QJ Motor SRK 921 RR rouge exposée en concession.", "kind": "photo", "ratio": "4/5" }
+      ]
+    },
+    {
+      "title": "Reels",
+      "accent": "Instagram",
+      "layout": "band",
+      "points": ["Série de reels mettant en avant les détails des motos de la concession"],
+      "tools": ["CapCut"],
+      "media": [
+        { "src": "igoa-moto/reel-900.jpg", "alt": "Extrait de reel : fourche et disque de frein d'une moto, inscription 900.", "kind": "video", "ratio": "9/16" },
+        { "src": "igoa-moto/reel-phare.jpg", "alt": "Extrait de reel : phare avant allumé d'un scooter blanc.", "kind": "video", "ratio": "9/16", "href": "https://www.instagram.com/igoamoto/reel/DUklOdDjnFL/" },
+        { "src": "igoa-moto/reel-arriere.jpg", "alt": "Extrait de reel : feu arrière et échappement d'une moto rouge et noire.", "kind": "video", "ratio": "9/16", "href": "https://www.instagram.com/igoamoto/reel/DVLH4cuAmvj/" }
+      ]
+    },
+    {
+      "title": "Parutions",
+      "accent": "Instagram",
+      "layout": "band",
+      "points": ["Publications du compte Instagram de la concession : offres, événements, nouveautés"],
+      "note": "Ton rôle exact sur ces publications est à préciser.",
+      "media": [
+        { "src": "igoa-moto/parution-ktm-finance.jpg", "alt": "Publication Instagram : offre de financement KTM.", "kind": "graphic", "ratio": "9/16" },
+        { "src": "igoa-moto/parution-road-show.jpg", "alt": "Publication Instagram : motos alignées lors d'un road show.", "kind": "graphic", "ratio": "9/16" },
+        { "src": "igoa-moto/parution-stage-trail.jpg", "alt": "Publication Instagram : affiche d'un stage de randonnée trail.", "kind": "graphic", "ratio": "9/16" },
+        { "src": "igoa-moto/parution-ktm.jpg", "alt": "Publication Instagram : moto KTM orange devant la concession.", "kind": "graphic", "ratio": "9/16" },
+        { "src": "igoa-moto/parution-qj.jpg", "alt": "Publication Instagram : moto QJ Motor dans un décor urbain.", "kind": "graphic", "ratio": "9/16" }
+      ]
+    },
+    {
+      "title": "Occasion",
+      "accent": "de la semaine",
+      "layout": "pair",
+      "points": [
+        "Création du visuel « Occasion de la semaine »",
+        "Mise en avant des motos d'occasion disponibles en concession",
+        "Valorisation des modèles et des offres promotionnelles",
+        "Objectif : inciter à la prise de contact et à la visite en concession"
+      ],
+      "media": [
+        { "src": "igoa-moto/occasion-bmw.jpg", "alt": "Visuel « Occasion de la semaine » : BMW S 1000 XR.", "kind": "graphic", "ratio": "4/5" },
+        { "src": "igoa-moto/occasion-sherco.jpg", "alt": "Visuel « Occasion de la semaine » : Sherco SE 300 R 2023.", "kind": "graphic", "ratio": "4/5" }
+      ]
+    },
+    {
+      "title": "Photos",
+      "accent": "pour la concession",
+      "layout": "full",
+      "points": ["Banque d'images réalisée pour la concession"],
+      "media": [
+        { "src": "igoa-moto/photo-concession.jpg", "alt": "Moto roadster rouge et noire devant un bardage métallique, sous un barnum.", "kind": "photo" }
+      ]
+    },
+    {
+      "title": "Page",
+      "accent": "Leboncoin",
+      "layout": "full",
+      "points": ["Refonte de la page vitrine de la concession sur Leboncoin"],
+      "note": "Capture à refaire en masquant tes coordonnées personnelles.",
+      "media": [
+        { "src": "igoa-moto/leboncoin-page.jpg", "alt": "Page vitrine IGOA Motos sur Leboncoin.", "kind": "graphic", "rights": "a-confirmer" }
+      ]
+    }
+  ],
+  "results": [],
+  "credits": "Contenus réalisés pour IGOA Moto, présentés avec son accord. Les marques et modèles cités (QJ Motor, KTM, BMW, Sherco…) appartiennent à leurs détenteurs respectifs.",
+  "rights": {
+    "owner": "IGOA Moto",
+    "status": "a-demander",
+    "notes": "Accord écrit d'IGOA Moto à obtenir. Vérifier : auteur des rushes et photos, licences musicales, visuels fournis par les marques."
+  },
+  "next": "le-georges"
+}

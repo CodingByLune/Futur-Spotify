@@ -1,0 +1,100 @@
+---
+/**
+ * Bloc média : photo (recadrable), visuel graphique (jamais recadré) ou vidéo (poster + lecteur).
+ * Les liens Instagram sont de simples liens sortants : aucune intégration, aucun traceur.
+ */
+import Img from './Img.astro';
+import type { ResolvedMedia } from '../lib/media';
+
+interface Props {
+  media: ResolvedMedia;
+  sizes: string;
+  ratio?: string;
+  eager?: boolean;
+  class?: string;
+  reveal?: 'fade' | 'curtain' | false;
+  lightbox?: string;
+  showCaption?: boolean;
+  vt?: string;
+}
+
+const { media, sizes, ratio, eager = false, class: cls, reveal = 'fade', lightbox, showCaption = true, vt } = Astro.props;
+const r = ratio ?? media.ratio ?? (media.kind === 'graphic' ? `${media.image.width}/${media.image.height}` : undefined);
+const isGraphic = media.kind === 'graphic';
+const isVideo = media.kind === 'video';
+const instagram = media.href?.includes('instagram.com');
+const revealAttr = reveal === 'curtain' ? 'curtain' : reveal === 'fade' ? '' : undefined;
+---
+<figure class:list={['mb', cls]} data-reveal={revealAttr}>
+  <div
+    class:list={['media', isGraphic && 'media--graphic', isVideo && 'media--video']}
+    data-video-scope
+    style={r ? `aspect-ratio:${r}` : undefined}
+  >
+    {media.pending && <span class="badge-preview">Aperçu · droits {media.status === 'a-demander' ? 'à demander' : 'à confirmer'}</span>}
+
+    {isVideo && media.videoSrc ? (
+      <video
+        class="mb-video"
+        data-autoplay-visible
+        muted
+        loop
+        playsinline
+        preload="none"
+        poster={media.image.src}
+        aria-label={media.alt}
+      >
+        <source src={media.videoSrc} type="video/mp4" />
+        {media.captions && <track kind="captions" src={`/${media.captions}`} srclang="fr" label="Français" default />}
+      </video>
+    ) : lightbox && !isVideo ? (
+      <button class="mb-zoom" type="button" data-lightbox={lightbox} data-full={media.image.src} data-alt={media.alt} aria-label={`Agrandir : ${media.alt}`}>
+        <Img image={media.image} alt={media.alt} sizes={sizes} eager={eager} fit={isGraphic ? 'contain' : 'cover'} vt={vt} />
+      </button>
+    ) : (
+      <Img image={media.image} alt={media.alt} sizes={sizes} eager={eager} fit={isGraphic ? 'contain' : 'cover'} vt={vt} />
+    )}
+
+    {isVideo && media.videoSrc && (
+      <button class="mb-toggle meta" type="button" data-video-toggle><span aria-hidden="true">❚❚</span> Pause</button>
+    )}
+  </div>
+
+  {showCaption && (media.caption || media.href) && (
+    <figcaption class="mb-cap">
+      {media.caption && <span class="meta">{media.caption}</span>}
+      {media.href && (
+        <a class="meta mb-link" href={media.href} target="_blank" rel="noopener noreferrer">
+          {instagram ? 'Voir sur Instagram' : 'Voir la publication'} <span aria-hidden="true">↗</span>
+          <span class="sr-only">(nouvel onglet)</span>
+        </a>
+      )}
+    </figcaption>
+  )}
+</figure>
+
+<style>
+  .mb { position: relative; }
+  .mb-zoom { display: block; width: 100%; height: 100%; cursor: zoom-in; }
+  .mb-zoom :global(img) { transition: transform var(--dur-m) var(--ease-out); }
+  @media (hover: hover) {
+    .mb-zoom:hover :global(img) { transform: scale(1.02); }
+  }
+  .mb-toggle {
+    position: absolute;
+    right: 10px; bottom: 10px;
+    z-index: 2;
+    padding: 6px 9px;
+    color: var(--blanc-50);
+    background: rgb(11 11 12 / 0.6);
+    border: 1px solid var(--gris-500);
+  }
+  .mb-cap {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .mb-link { color: var(--fg-2); transition: color var(--dur-s) var(--ease-out); }
+  .mb-link:hover { color: var(--accent); }
+</style>

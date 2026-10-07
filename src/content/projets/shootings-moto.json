@@ -1,0 +1,59 @@
+{
+  "title": "Shootings moto",
+  "order": 3,
+  "featured": true,
+  "template": "serie",
+  "type": "perso",
+  "year": null,
+  "disciplines": ["photo"],
+  "collection": "moto",
+  "tools": [],
+  "summary": "Trois séries autour d'un roadster : forêt, coucher de soleil, nuit.",
+  "context": null,
+  "cover": {
+    "src": "shootings-moto/sunset.jpg",
+    "alt": "Roadster noir en contre-jour sur une jetée, face au soleil couchant.",
+    "kind": "photo"
+  },
+  "chapters": [
+    {
+      "title": "Forêt",
+      "layout": "full",
+      "media": [
+        { "src": "shootings-moto/foret.jpg", "alt": "Roadster noir garé sous un abri de bois, dans une lumière de sous-bois.", "kind": "photo" }
+      ]
+    },
+    {
+      "title": "Sunset",
+      "layout": "full",
+      "media": [
+        { "src": "shootings-moto/sunset.jpg", "alt": "Roadster noir en contre-jour sur une jetée au coucher du soleil.", "kind": "photo" }
+      ]
+    },
+    {
+      "title": "Nocturne",
+      "layout": "full",
+      "media": [
+        { "src": "shootings-moto/nocturne.jpg", "alt": "Roadster noir sur fond noir, éclairé de côté.", "kind": "photo" }
+      ]
+    },
+    {
+      "title": "Moto",
+      "accent": "en situation",
+      "layout": "grid",
+      "note": "Contexte de chaque photo à confirmer (personnel, concession ou client).",
+      "media": [
+        { "src": "motomobil/rouge-bardage.jpg", "alt": "Moto roadster rouge et noire devant un bardage métallique.", "kind": "photo", "ratio": "1/1", "rights": "a-confirmer" },
+        { "src": "motomobil/ktm-orange.jpg", "alt": "Moto sportive orange garée devant une haie.", "kind": "photo", "ratio": "1/1", "rights": "a-confirmer" },
+        { "src": "motomobil/station-nuit.jpg", "alt": "Moto garée sous l'auvent d'une station-service, la nuit.", "kind": "photo", "ratio": "1/1", "rights": "a-confirmer" },
+        { "src": "motomobil/sportive-noire-2.jpg", "alt": "Moto sportive noire et or devant un bâtiment vitré.", "kind": "photo", "ratio": "1/1", "rights": "a-confirmer" },
+        { "src": "motomobil/motocross.jpg", "alt": "Pilote en tenue sur une moto tout-terrain en forêt.", "kind": "photo", "ratio": "1/1", "rights": "a-confirmer" },
+        { "src": "motomobil/roadster-orange.jpg", "alt": "Motard roulant sur un roadster orange et noir.", "kind": "photo", "ratio": "1/1", "rights": "a-confirmer" },
+        { "src": "motomobil/sportive-noire.jpg", "alt": "Détail d'une moto sportive noire dans un parking.", "kind": "photo", "ratio": "1/1", "rights": "a-confirmer" },
+        { "src": "motomobil/rouge-detail.jpg", "alt": "Détail d'une moto sportive rouge en intérieur.", "kind": "photo", "ratio": "1/1", "rights": "a-confirmer" }
+      ]
+    }
+  ],
+  "rights": { "owner": "Kelyan Ferreira-Macias", "status": "personnel" },
+  "next": "video-moto"
+}

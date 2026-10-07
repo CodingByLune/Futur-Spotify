@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import MediaBlock from '../../components/MediaBlock.astro';
+import { resolveAll, PREVIEW, type RightsStatus } from '../../lib/media';
+
+const entries = (await getCollection('archives')).sort((a, b) => a.data.order - b.data.order);
+const prepared = entries
+  .map((e) => ({ e, media: resolveAll(e.data.media, e.data.rights.status as RightsStatus) }))
+  .filter((x) => x.media.length > 0);
+const etudes = prepared.filter((x) => x.e.data.group === 'etudes');
+const detournements = prepared.filter((x) => x.e.data.group === 'detournement');
+const mention = 'Exercice académique — visuel non officiel, sans lien avec les marques et œuvres citées.';
+---
+<Base
+  title="Archives — projets académiques"
+  description="Concours, affiches et exercices de création réalisés pendant la formation de Kelyan Ferreira-Macias."
+  noindex
+>
+  <section class="wrap arch">
+    <span class="meta">Archives</span>
+    <h1 class="display-l arch-title">Projets <span class="serif">académiques</span></h1>
+    <p class="lead arch-lead">Travaux réalisés pendant ma formation : concours, affiches, exercices de création.</p>
+
+    {prepared.length === 0 && (
+      <p class="arch-empty">Les archives seront publiées prochainement.</p>
+    )}
+
+    {etudes.length > 0 && (
+      <section class="arch-group" aria-labelledby="g-etudes">
+        <h2 class="meta" id="g-etudes">Concours &amp; affiches</h2>
+        <ul class="arch-grid" role="list">
+          {etudes.map(({ e, media }) => media.map((m, k) => (
+            <li>
+              <MediaBlock media={m} sizes="(max-width: 767px) 50vw, 20vw" lightbox="archives" showCaption={false} />
+              <p class="arch-name">{e.data.title}{media.length > 1 && ` — ${k + 1}/${media.length}`}</p>
+              <p class="meta arch-label">{e.data.label}{e.data.context && ` · ${e.data.context}`}</p>
+              {PREVIEW && e.data.rights.notes && <p class="arch-note">Aperçu — {e.data.rights.notes}</p>}
+            </li>
+          )))}
+        </ul>
+      </section>
+    )}
+
+    {detournements.length > 0 && (
+      <section class="arch-group" aria-labelledby="g-det">
+        <h2 class="meta" id="g-det">Exercices de détournement</h2>
+        <ul class="arch-grid" role="list">
+          {detournements.map(({ e, media }) => media.map((m) => (
+            <li>
+              <MediaBlock media={m} sizes="(max-width: 767px) 50vw, 20vw" lightbox="archives" showCaption={false} />
+              <p class="arch-name">{e.data.title}</p>
+              <p class="meta arch-label">{mention}</p>
+            </li>
+          )))}
+        </ul>
+      </section>
+    )}
+
+    <a class="cta arch-back" href="/projets"><span class="arrow" aria-hidden="true">←</span> Retour aux projets</a>
+  </section>
+</Base>
+
+<style>
+  .arch { padding-top: calc(var(--header-h) + clamp(56px, 9vw, 120px)); padding-bottom: var(--section); }
+  .arch-title { margin-top: 18px; }
+  .arch-lead { margin-top: 28px; color: var(--gris-300); max-width: 46ch; }
+  .arch-empty { margin-top: 48px; color: var(--gris-400); }
+  .arch-group { margin-top: clamp(56px, 8vw, 96px); padding-top: 24px; border-top: 1px solid var(--gris-700); }
+  .arch-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 40px var(--gutter); margin-top: 28px; align-items: end; }
+  .arch-name { margin-top: 12px; font-size: 0.9375rem; }
+  .arch-label { margin-top: 4px; font-size: 0.6875rem; }
+  .arch-note { margin-top: 8px; font-family: var(--f-mono); font-size: 0.6875rem; color: var(--cognac-300); }
+  .arch-back { margin-top: clamp(56px, 8vw, 96px); }
+  @media (max-width: 1023px) { .arch-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .arch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

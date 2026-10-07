@@ -1,0 +1,40 @@
+---
+/**
+ * Image optimisée : AVIF + WebP + repli JPEG, tailles responsives, dimensions explicites (pas de décalage).
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  image: ImageMetadata;
+  alt: string;
+  sizes: string;
+  eager?: boolean;
+  class?: string;
+  fit?: 'cover' | 'contain';
+  position?: string;
+  vt?: string;
+}
+
+const { image, alt, sizes, eager = false, class: cls, fit = 'cover', position, vt } = Astro.props;
+const candidates = [360, 540, 720, 960, 1280, 1600, 1920, 2400];
+const widths = candidates.filter((w) => w < image.width).concat(image.width);
+const style = [
+  `object-fit:${fit}`,
+  position ? `object-position:${position}` : '',
+  vt ? `view-transition-name:${vt}` : '',
+].filter(Boolean).join(';');
+---
+<Picture
+  src={image}
+  alt={alt}
+  widths={widths}
+  sizes={sizes}
+  formats={['avif', 'webp']}
+  quality={78}
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : 'auto'}
+  decoding={eager ? 'sync' : 'async'}
+  class={cls}
+  style={style}
+/>

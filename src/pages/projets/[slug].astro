@@ -1,0 +1,376 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Img from '../../components/Img.astro';
+import MediaBlock from '../../components/MediaBlock.astro';
+import { getProjets, preparer, disciplineLabel, href, type Projet } from '../../lib/projets';
+import { PREVIEW } from '../../lib/media';
+
+export const getStaticPaths = (async () => {
+  const projets = await getProjets();
+  return projets.map((p, i) => ({ params: { slug: p.id }, props: { p, index: i, total: projets.length, all: projets } }));
+}) satisfies GetStaticPaths;
+
+const { p, index, total, all } = Astro.props as { p: Projet; index: number; total: number; all: Projet[] };
+const d = p.data;
+const { cover, chapters, results, status } = preparer(p);
+const nextP = all.find((x) => x.id === d.next) ?? all[(index + 1) % all.length];
+const next = preparer(nextP);
+const n = String(index + 1).padStart(2, '0');
+const disc = d.disciplines.map(disciplineLabel);
+const group = `projet-${p.id}`;
+const isEtude = d.template === 'etude';
+
+const og = cover && !cover.pending ? await getImage({ src: cover.image, width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 80 }) : null;
+
+const fiche = [
+  d.client && { k: 'Entreprise', v: [d.client, d.location].filter(Boolean).join(' — ') },
+  d.roleDisplayed && { k: 'Rôle', v: d.roleDisplayed },
+  d.period && { k: 'Période', v: d.period },
+  d.deliverables && { k: 'Livrables', v: d.deliverables },
+  d.tools.length > 0 && { k: 'Outils', v: d.tools.join(' · ') },
+].filter(Boolean) as { k: string; v: string }[];
+
+const jsonLd = [
+  {
+    '@type': 'CreativeWork',
+    name: d.title,
+    description: d.summary,
+    url: new URL(href(p.id), Astro.site).toString(),
+    creator: { '@id': new URL('/#personne', Astro.site).toString() },
+    inLanguage: 'fr-FR',
+    ...(d.year ? { dateCreated: d.year } : {}),
+    ...(d.client ? { sourceOrganization: { '@type': 'Organization', name: d.client } } : {}),
+    keywords: disc.join(', '),
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'Projets', item: new URL('/projets', Astro.site).toString() },
+      { '@type': 'ListItem', position: 3, name: d.title, item: new URL(href(p.id), Astro.site).toString() },
+    ],
+  },
+];
+const sizesFor = (layout: string, count: number) =>
+  layout === 'full' ? '100vw' : layout === 'grid' ? '(max-width: 767px) 100vw, 33vw' : count > 1 ? '(max-width: 767px) 100vw, 30vw' : '(max-width: 767px) 100vw, 58vw';
+---
+<Base
+  title={`${d.title} — ${disc.slice(0, 2).join(' & ')}`}
+  description={`${d.title} : ${d.summary} ${d.roleDisplayed ? `Rôle : ${d.roleDisplayed}.` : ''}`.trim()}
+  image={og?.src}
+  overlayHeader={Boolean(cover)}
+  projectNav={{ label: d.title, position: `Projet ${n} / ${String(total).padStart(2, '0')}` }}
+  jsonLd={jsonLd}
+>
+  <!-- HERO -->
+  <section class:list={['ph', !cover && 'ph--text']} aria-labelledby="titre">
+    {cover && (
+      <div class="ph-media">
+        <Img image={cover.image} alt={cover.alt} sizes="100vw" eager vt={`projet-${p.id}`} fit={cover.kind === 'graphic' ? 'contain' : 'cover'} position="center 60%" />
+        {cover.pending && <span class="badge-preview">Aperçu · droits à demander</span>}
+      </div>
+    )}
+    <div class="ph-scrim" aria-hidden="true"></div>
+    <div class="ph-content">
+      <p class="meta ph-disc">
+        {disc.join(' · ')}{d.collection === 'moto' && <> · <span class="ph-moto">Collection Moto</span></>}
+      </p>
+      <h1 class="display ph-title" id="titre" data-reveal="lines"><span class="line"><span>{d.title}</span></span></h1>
+      <p class="lead ph-lead">{d.roleDisplayed ? `${d.roleDisplayed} — ${d.summary.charAt(0).toLowerCase()}${d.summary.slice(1)}` : d.summary}</p>
+    </div>
+  </section>
+
+  {fiche.length > 0 && (
+    <div class="wrap">
+      <dl class="fiche">
+        {fiche.map((f) => (<div><dt class="meta">{f.k}</dt><dd>{f.v}</dd></div>))}
+        {d.links.length > 0 && (
+          <div><dt class="meta">Liens</dt><dd>{d.links.map((l) => <a href={l.href} target="_blank" rel="noopener noreferrer">{l.label} ↗<span class="sr-only"> (nouvel onglet)</span></a>)}</dd></div>
+        )}
+      </dl>
+    </div>
+  )}
+
+  {(d.context || (PREVIEW && isEtude)) && (
+    <section class="wrap grid ctx" aria-label="Contexte et mission">
+      <h2 class="meta ctx-label">Contexte &amp; mission</h2>
+      <p class:list={['ctx-text', !d.context && 'is-placeholder']}>{d.context ?? '[Aperçu — à compléter : 3 à 4 lignes sur l’entreprise, ce qui t’a été confié et les objectifs.]'}</p>
+    </section>
+  )}
+
+  {isEtude && chapters.length > 1 && (
+    <nav class="wrap toc" aria-label="Sommaire du projet">
+      <ol role="list">
+        {chapters.map((c, i) => (
+          <li><a href={`#ch-${i + 1}`}><span class="num">{String(i + 1).padStart(2, '0')}</span> {c.title}{c.accent && ` ${c.accent}`}</a></li>
+        ))}
+      </ol>
+    </nav>
+  )}
+
+  <!-- CHAPITRES -->
+  {chapters.map((c, i) => {
+    const id = `ch-${i + 1}`;
+    const num = String(i + 1).padStart(2, '0');
+    const head = (
+      <header class="ch-head">
+        {isEtude && <span class="num">{num}</span>}
+        <h2 class="h2 ch-title">{c.title}{c.accent && <> <span class="serif">{c.accent}</span></>}</h2>
+      </header>
+    );
+    const text = (c.points.length > 0 || c.tools.length > 0 || (PREVIEW && c.note)) && (
+      <div class="ch-text">
+        {c.points.length > 0 && <ul class="ch-points" role="list">{c.points.map((pt) => <li>{pt}</li>)}</ul>}
+        {c.tools.length > 0 && <p class="meta ch-tools">{c.tools.join(' · ')}</p>}
+        {PREVIEW && c.note && <p class="ch-note">Aperçu — {c.note}</p>}
+      </div>
+    );
+    const zoomable = (kind: string) => (kind === 'video' ? undefined : group);
+
+    if (c.layout === 'band' && c.media.length > 0) {
+      return (
+        <section class="ch ch--band" id={id}>
+          <div class="wrap ch-band-head">
+            <div>{head}{text}</div>
+            <span class="meta">{c.media.length} {c.media[0].kind === 'video' ? 'vidéos' : 'visuels'} · 9:16</span>
+          </div>
+          <div class="band" data-band>
+            <div class="band-sticky">
+              <ul class="band-track" role="list" data-band-track>
+                {c.media.map((m) => (
+                  <li class="band-item">
+                    <MediaBlock media={m} ratio={m.ratio ?? '9/16'} sizes="(max-width: 767px) 80vw, 360px" lightbox={zoomable(m.kind)} reveal={false} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    if (c.layout === 'sticky') {
+      return (
+        <section class="ch ch--sticky wrap grid" id={id}>
+          <div class="ch-aside">{head}{text}</div>
+          <div class:list={['ch-medias', c.media.length > 1 && 'ch-medias--two']}>
+            {c.media.map((m, k) => (
+              <MediaBlock media={m} sizes={sizesFor('sticky', c.media.length)} lightbox={zoomable(m.kind)} class={k === 1 ? 'is-offset' : undefined} reveal={k === 0 ? 'curtain' : 'fade'} />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    if (c.layout === 'pair') {
+      return (
+        <section class="ch ch--pair wrap grid" id={id}>
+          <div class="ch-aside">{head}{text}</div>
+          {c.media.slice(0, 3).map((m, k) => (
+            <MediaBlock media={m} sizes="(max-width: 767px) 100vw, 30vw" lightbox={zoomable(m.kind)} class={`pair-${k}`} />
+          ))}
+        </section>
+      );
+    }
+
+    if (c.layout === 'grid') {
+      return (
+        <section class="ch ch--grid wrap" id={id}>
+          <div class="ch-grid-head">{head}{text}</div>
+          <div class="ch-gallery">
+            {c.media.map((m) => (
+              <MediaBlock media={m} sizes={sizesFor('grid', c.media.length)} lightbox={zoomable(m.kind)} reveal="fade" />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    // full
+    return (
+      <section class="ch ch--full" id={id}>
+        <div class="wrap ch-full-head">{head}{text}</div>
+        {c.media.map((m) => (
+          <div class:list={[m.kind === 'graphic' || m.image.height > m.image.width ? 'wrap ch-full-graphic' : 'ch-full-media']}>
+            <MediaBlock media={m} sizes={m.kind === 'graphic' ? '(max-width: 767px) 100vw, 70vw' : '100vw'} lightbox={zoomable(m.kind)} reveal="curtain" />
+          </div>
+        ))}
+      </section>
+    );
+  })}
+
+  <!-- RÉSULTATS : uniquement des chiffres réels, publiés avec l'accord de l'entreprise -->
+  {results.length > 0 && (
+    <section class="results" aria-labelledby="res-t">
+      <div class="wrap grid">
+        <h2 class="meta res-label" id="res-t">Résultats</h2>
+        <dl class="res-list">
+          {results.map((r) => (
+            <div class="res" data-reveal>
+              <dt class="res-lab">{r.label}</dt>
+              <dd class="display res-val">{r.value}</dd>
+              <dd class="meta">{r.source}{!r.publishable && <span class="accent"> · Aperçu — accord requis</span>}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  )}
+
+  <!-- CRÉDITS & DROITS -->
+  {(d.credits || PREVIEW) && (
+    <section class="wrap grid credits" aria-label="Crédits et droits">
+      <h2 class="meta cr-label">Crédits &amp; droits</h2>
+      <div class="cr-text">
+        {d.credits && <p>{d.credits}</p>}
+        {PREVIEW && (
+          <p class="ch-note">Aperçu — statut des droits : <strong>{status}</strong>{d.rights.notes && ` · ${d.rights.notes}`}{d.roleSource && ` · Intitulé source : ${d.roleSource}`}</p>
+        )}
+      </div>
+      <span class="cr-sign" aria-hidden="true"><span class="cr-line"></span><span class="cr-kf">K<i>F</i></span></span>
+    </section>
+  )}
+
+  <!-- PROJET SUIVANT -->
+  <a class="next" href={href(nextP.id)} data-cursor="Voir">
+    {next.cover && (
+      <div class="next-media" aria-hidden="true">
+        <Img image={next.cover.image} alt="" sizes="100vw" fit={next.cover.kind === 'graphic' ? 'contain' : 'cover'} />
+      </div>
+    )}
+    <div class="next-content">
+      <span class="meta">Projet suivant</span>
+      <span class="display next-title">{nextP.data.title}</span>
+      <span class="cta cta--lg next-cta">Voir le projet <span class="arrow" aria-hidden="true">→</span></span>
+    </div>
+  </a>
+
+  {isEtude && (
+    <div class="wrap similar">
+      <a class="cta cta--lg" href="/contact">Un projet similaire ? Parlons-en <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  )}
+</Base>
+
+<style>
+  /* Hero */
+  .ph { position: relative; height: 92svh; min-height: 560px; max-height: 1000px; overflow: hidden; display: flex; align-items: flex-end; }
+  .ph--text { height: auto; min-height: 0; padding-top: calc(var(--header-h) + 120px); }
+  .ph-media { position: absolute; inset: 0; }
+  .ph-media :global(img) { width: 100%; height: 100%; filter: brightness(0.82); }
+  .ph-media :global(.badge-preview) { top: calc(var(--header-h) + 8px); left: var(--margin); }
+  .ph-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(11 11 12 / 0.6) 0%, rgb(11 11 12 / 0) 25%, rgb(11 11 12 / 0.15) 40%, rgb(11 11 12 / 0.95) 100%); }
+  .ph--text .ph-scrim { display: none; }
+  .ph-content { position: relative; padding: 0 var(--margin) clamp(36px, 6vh, 64px); width: 100%; }
+  .ph-disc { color: var(--blanc-50); text-shadow: 0 1px 12px rgb(0 0 0 / 0.7); }
+  .ph-moto { color: var(--cognac-300); }
+  .ph-title { font-size: clamp(2.75rem, 10.4vw, 9.75rem); margin-top: 16px; overflow-wrap: anywhere; }
+  .ph-lead { margin-top: 22px; max-width: 46ch; }
+
+  /* Fiche technique */
+  .fiche { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 24px; padding-block: 34px; border-block: 1px solid var(--gris-700); }
+  .fiche dd { margin-top: 8px; font-size: 0.9375rem; line-height: 1.45; display: grid; gap: 4px; }
+  .fiche dd a:hover { color: var(--cognac-300); }
+
+  /* Contexte */
+  .ctx { padding-block: clamp(80px, 10vw, 120px) clamp(40px, 6vw, 72px); }
+  .ctx-label { grid-column: 1 / span 2; padding-top: 0.6em; }
+  .ctx-text { grid-column: 3 / span 8; font-size: clamp(1.375rem, 2.2vw, 1.875rem); line-height: 1.3; }
+  .ctx-text.is-placeholder { color: var(--gris-500); }
+  @media (max-width: 1023px) { .ctx-label, .ctx-text { grid-column: 1 / -1; } .ctx-text { margin-top: 14px; } }
+
+  /* Sommaire */
+  .toc ol { display: flex; flex-wrap: wrap; gap: 10px 28px; padding-bottom: 24px; }
+  .toc a { font-size: 0.9375rem; color: var(--gris-300); transition: color var(--dur-s) var(--ease-out); }
+  .toc a:hover { color: var(--blanc-50); }
+
+  /* Chapitres */
+  .ch { padding-block: clamp(80px, 10vw, 120px); border-top: 1px solid var(--gris-700); }
+  .ch-head .num { display: block; margin-bottom: 12px; }
+  .ch-title { font-size: clamp(2rem, 3.4vw, 3rem); }
+  .ch-points { margin-top: 24px; }
+  .ch-points li { padding-block: 9px; border-top: 1px solid var(--gris-700); color: var(--gris-300); font-size: 1rem; }
+  .ch-tools { margin-top: 18px; }
+  .ch-note { margin-top: 16px; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.03em; color: var(--cognac-300); border: 1px dashed var(--cognac-700); padding: 8px 10px; }
+
+  .ch--sticky { align-items: start; row-gap: 40px; }
+  .ch--sticky .ch-aside { grid-column: 1 / span 4; position: sticky; top: calc(var(--header-h) + 24px); }
+  .ch-medias { grid-column: 6 / span 7; display: grid; gap: var(--gutter); }
+  .ch-medias--two { grid-template-columns: 1fr 1fr; align-items: start; }
+  .ch-medias--two :global(.is-offset) { margin-top: 33%; }
+
+  .ch--pair { align-items: start; row-gap: 32px; }
+  .ch--pair .ch-aside { grid-column: 1 / span 4; }
+  .ch--pair :global(.pair-0) { grid-column: 6 / span 3; }
+  .ch--pair :global(.pair-1) { grid-column: 9 / span 4; margin-top: 18%; }
+  .ch--pair :global(.pair-2) { grid-column: 6 / span 3; }
+
+  .ch-grid-head, .ch-full-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); margin-bottom: 48px; }
+  .ch-grid-head .ch-head, .ch-full-head .ch-head { grid-column: 1 / span 5; }
+  .ch-grid-head .ch-text, .ch-full-head .ch-text { grid-column: 7 / span 6; }
+  .ch-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); align-items: start; }
+  .ch-full-media :global(.media) { max-height: 92vh; }
+  .ch-full-graphic { max-width: 1100px; }
+  .ch-full-graphic :global(.mb) { width: fit-content; max-width: 100%; margin-inline: auto; }
+  .ch-full-graphic :global(.media) { max-height: 88vh; aspect-ratio: auto !important; background: transparent; }
+  .ch-full-graphic :global(.media img) { max-height: 88vh; width: auto; margin-inline: auto; }
+
+  /* Bande horizontale */
+  .ch-band-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; }
+  .ch-band-head > div { max-width: 640px; }
+  .band-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden; }
+  .band-track { display: flex; gap: var(--gutter); padding-inline: var(--margin); will-change: transform; }
+  .band-item { flex: 0 0 min(360px, 26vw); }
+  @media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+    .band { height: auto !important; }
+    .band-sticky { position: static; height: auto; display: block; }
+    .band-track { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; transform: none !important; padding-bottom: 8px; }
+    .band-track::-webkit-scrollbar { display: none; }
+    .band-item { flex-basis: min(78vw, 360px); scroll-snap-align: start; }
+  }
+
+  @media (max-width: 1023px) {
+    .ch--sticky .ch-aside, .ch-medias, .ch--pair .ch-aside, .ch--pair :global(.pair-0), .ch--pair :global(.pair-1), .ch--pair :global(.pair-2) { grid-column: 1 / -1; position: static; }
+    .ch--pair :global(.pair-1) { margin-top: 0; }
+    .ch-grid-head .ch-head, .ch-grid-head .ch-text, .ch-full-head .ch-head, .ch-full-head .ch-text { grid-column: 1 / -1; }
+    .ch-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 767px) {
+    .ch-medias--two { grid-template-columns: 1fr; }
+    .ch-medias--two :global(.is-offset) { margin-top: 0; }
+    .ch-gallery { grid-template-columns: 1fr; }
+    .ch-band-head { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* Résultats */
+  .results { background: var(--noir-900); padding-block: clamp(80px, 10vw, 120px); }
+  .res-label { grid-column: 1 / span 2; }
+  .res-list { grid-column: 3 / span 10; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px var(--gutter); }
+  .res { display: flex; flex-direction: column; gap: 12px; }
+  .res-val { font-size: clamp(3.5rem, 7vw, 6.5rem); font-stretch: 108%; order: -1; }
+  .res-lab { font-size: 1.0625rem; color: var(--gris-300); }
+  @media (max-width: 1023px) { .res-label, .res-list { grid-column: 1 / -1; } .res-list { margin-top: 24px; } }
+
+  /* Crédits */
+  .credits { padding-block: 72px; align-items: center; row-gap: 20px; }
+  .cr-label { grid-column: 1 / span 2; }
+  .cr-text { grid-column: 3 / span 7; color: var(--gris-400); font-size: 0.9375rem; display: grid; gap: 10px; }
+  .cr-sign { grid-column: 11 / span 2; justify-self: end; display: flex; align-items: center; gap: 12px; }
+  .cr-line { width: 44px; height: 1px; background: var(--cognac-500); }
+  .cr-kf { font-family: var(--f-serif); font-size: 1.75rem; letter-spacing: -0.06em; white-space: nowrap; }
+  @media (max-width: 1023px) { .cr-label, .cr-text { grid-column: 1 / -1; } .cr-sign { grid-column: 1 / -1; justify-self: start; } }
+
+  /* Projet suivant */
+  .next { position: relative; display: flex; align-items: flex-end; min-height: clamp(420px, 60vh, 640px); overflow: hidden; border-top: 1px solid var(--gris-700); }
+  .next-media { position: absolute; inset: 0; }
+  .next-media :global(img) { width: 100%; height: 100%; filter: brightness(0.5); transition: filter var(--dur-m) var(--ease-out), transform 1200ms var(--ease-out); }
+  .next:hover .next-media :global(img) { filter: brightness(0.65); transform: scale(1.02); }
+  .next-content { position: relative; width: 100%; padding: 0 var(--margin) clamp(36px, 6vh, 56px); display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 16px 24px; }
+  .next-content .meta { grid-column: 1 / -1; color: var(--gris-300); }
+  .next-title { font-size: clamp(3rem, 10vw, 9.5rem); }
+  .next-cta { border-color: var(--gris-300); }
+  @media (max-width: 767px) { .next-content { grid-template-columns: 1fr; } }
+  .similar { padding-block: 56px; }
+</style>

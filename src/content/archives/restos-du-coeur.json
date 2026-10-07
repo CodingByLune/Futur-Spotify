@@ -1,0 +1,11 @@
+{
+  "title": "Restos du Cœur",
+  "order": 3,
+  "group": "etudes",
+  "label": "Campagne",
+  "context": null,
+  "media": [
+    { "src": "archives/restos-du-coeur.jpg", "alt": "Visuel de campagne « Aider plus, ensemble. Tout devient possible. »", "kind": "graphic" }
+  ],
+  "rights": { "status": "a-confirmer", "notes": "Logo d'une association tierce : mention « exercice académique » obligatoire." }
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Affiche détournée",
+  "order": 6,
+  "group": "detournement",
+  "label": "Exercice de détournement",
+  "context": null,
+  "media": [
+    { "src": "archives/hitman.jpg", "alt": "Affiche détournée du film Hitman.", "kind": "graphic" }
+  ],
+  "rights": { "status": "a-confirmer", "notes": "Œuvre et marque de tiers." }
+}

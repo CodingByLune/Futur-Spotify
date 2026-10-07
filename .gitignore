@@ -1,0 +1,19 @@
+# Dépendances et builds
+node_modules/
+dist/
+.astro/
+.netlify/
+
+# Variables d'environnement (clés d'API, adresses de réception)
+.env
+.env.*
+!.env.example
+
+# Médias non encore autorisés à la diffusion (IGOA Moto, Le Georges, archives,
+# photos au contexte à confirmer). Ils restent sur ta machine et ne sont jamais
+# envoyés sur GitHub tant que leur statut n'est pas « accorde ».
+src/assets/prive/
+
+# Système
+.DS_Store
+Thumbs.db

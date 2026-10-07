@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import site from '../data/site.json';
+import { resolveImage, publicFileExists, PREVIEW } from '../lib/media';
+
+const portrait = site.portrait ? resolveImage(site.portrait) : null;
+const cv = site.cv && publicFileExists(site.cv) ? `/${site.cv}` : null;
+const tools = Array.from(new Set(site.expertises.flatMap((e) => e.tools)));
+---
+<Base title="À propos" description={`${site.name} — ${site.about.lead}`}>
+  <section class="wrap ab">
+    <div class="grid ab-top">
+      <div class="ab-head">
+        <span class="meta">À propos</span>
+        <h1 class="display-l ab-title">Kelyan <span class="serif">Ferreira-Macias</span></h1>
+      </div>
+      {portrait ? (
+        <div class="media ab-img" data-reveal="curtain"><Img image={portrait} alt={`Portrait de ${site.name}`} sizes="(max-width: 767px) 100vw, 40vw" eager /></div>
+      ) : PREVIEW ? (
+        <div class="ab-img ab-ph meta" aria-hidden="true">Portrait HD à fournir</div>
+      ) : null}
+      <div class="ab-txt">
+        <p class="ab-lead">{site.about.lead}</p>
+        <div class="prose ab-prose">{site.about.paragraphs.map((t) => <p>{t}</p>)}</div>
+        {PREVIEW && site.about.draft && <p class="ab-note">Aperçu — texte provisoire construit à partir de ton PDF et de ton CV, à réécrire avec toi.</p>}
+        <dl class="ab-facts">
+          <div><dt class="meta">Basé</dt><dd>{site.location}</dd></div>
+          <div><dt class="meta">Langues</dt><dd>{site.languages.join(' · ')}</dd></div>
+          <div><dt class="meta">Spécialité</dt><dd>Moto</dd></div>
+        </dl>
+        <div class="ab-links">
+          <a class="cta cta--lg" href="/contact">Me contacter <span class="arrow" aria-hidden="true">→</span></a>
+          {cv && <a class="cta" href={cv} download>CV (PDF) <span class="arrow" aria-hidden="true">↓</span></a>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="light section" aria-labelledby="ab-parcours">
+    <div class="wrap">
+      <h2 class="display-l" id="ab-parcours">Parcours</h2>
+      <h3 class="meta ab-sub">Expériences</h3>
+      <ol class="par" role="list">
+        {site.parcours.experiences.map((x) => (
+          <li class="par-row"><span class="meta">{x.period}</span><span class="par-org">{x.org}{x.place && ` — ${x.place}`}</span><span>{x.role}</span></li>
+        ))}
+      </ol>
+      <h3 class="meta ab-sub">Formation</h3>
+      <ol class="par" role="list">
+        {site.parcours.formations.map((x) => (
+          <li class="par-row"><span class="meta">{x.period ?? ''}</span><span class="par-org">{x.org}</span><span>{x.place}</span></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section wrap grid ab-more" aria-label="Outils et centres d'intérêt">
+    <div class="ab-col">
+      <h2 class="meta">Outils</h2>
+      <p class="ab-tools">{tools.join(' · ')}</p>
+    </div>
+    <div class="ab-col">
+      <h2 class="meta">Centres d'intérêt</h2>
+      <ul class="ab-int" role="list">{site.about.interests.map((i) => <li>{i}</li>)}</ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ab { padding-top: calc(var(--header-h) + clamp(56px, 9vw, 120px)); padding-bottom: var(--section); }
+  .ab-top { row-gap: 48px; align-items: end; }
+  .ab-head { grid-column: 1 / -1; }
+  .ab-title { margin-top: 18px; }
+  .ab-img { grid-column: 1 / span 5; aspect-ratio: 4 / 5; }
+  .ab-ph { display: grid; place-items: center; background: repeating-linear-gradient(135deg, var(--noir-800) 0 10px, var(--noir-900) 10px 20px); }
+  .ab-txt { grid-column: 7 / span 6; }
+  .ab-top:not(:has(.ab-img)) .ab-txt { grid-column: 3 / span 8; }
+  .ab-lead { font-size: clamp(1.5rem, 2.3vw, 2rem); line-height: 1.3; letter-spacing: -0.01em; }
+  .ab-prose { margin-top: 24px; }
+  .ab-note { margin-top: 18px; font-family: var(--f-mono); font-size: 0.75rem; color: var(--cognac-300); border: 1px dashed var(--cognac-700); padding: 8px 10px; }
+  .ab-facts { display: grid; grid-template-columns: repeat(3, auto); gap: 24px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--gris-700); }
+  .ab-facts dd { margin-top: 6px; font-size: 0.9375rem; }
+  .ab-links { display: flex; gap: 36px; flex-wrap: wrap; margin-top: 40px; }
+  .ab-sub { margin-top: 48px; margin-bottom: 12px; }
+  .par-row { display: grid; grid-template-columns: 200px 1fr 1fr; gap: 24px; padding-block: 20px; border-top: 1px solid var(--gris-100); }
+  .par-org { font-weight: 500; }
+  .ab-more { row-gap: 48px; }
+  .ab-col { grid-column: span 6; }
+  .ab-tools { margin-top: 16px; font-size: clamp(1.25rem, 2vw, 1.75rem); line-height: 1.4; }
+  .ab-int { margin-top: 16px; }
+  .ab-int li { padding-block: 10px; border-top: 1px solid var(--gris-700); color: var(--gris-300); }
+  @media (max-width: 1023px) {
+    .ab-img, .ab-txt, .ab-top:not(:has(.ab-img)) .ab-txt, .ab-col { grid-column: 1 / -1; }
+    .ab-img { max-width: 520px; }
+  }
+  @media (max-width: 767px) {
+    .ab-facts { grid-template-columns: 1fr; }
+    .par-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>

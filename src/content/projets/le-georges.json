@@ -1,0 +1,131 @@
+{
+  "title": "Le Georges",
+  "order": 2,
+  "featured": true,
+  "template": "etude",
+  "type": "pro",
+  "client": "Le Georges",
+  "location": "Biarritz",
+  "roleDisplayed": "Community Manager",
+  "roleSource": "Community Manager — Le Georges — Jan. – Août 2025 (Alternance) [CV]",
+  "period": "Janvier – août 2025",
+  "year": "2025",
+  "disciplines": ["social", "design", "photo", "video", "communication"],
+  "collection": null,
+  "tools": ["Illustrator", "Photoshop", "InDesign", "Lightroom", "CapCut", "Canva"],
+  "summary": "Identité textile, print, Instagram et événements pour un restaurant de Biarritz.",
+  "context": null,
+  "deliverables": "Tenue, casquettes, publications, reels, photos, stories, affiches événementielles",
+  "links": [],
+  "cover": {
+    "src": "le-georges/feed-cocktail.jpg",
+    "alt": "Cocktail rosé décoré d'une rondelle d'orange séchée, posé sur le bar.",
+    "kind": "photo"
+  },
+  "chapters": [
+    {
+      "title": "Identité",
+      "accent": "textile",
+      "layout": "pair",
+      "points": [
+        "Création de la première tenue officielle du restaurant",
+        "Modernisation du logo et design des visuels face et dos",
+        "Choix des couleurs et adaptation au textile",
+        "Conception de deux designs de casquettes : déclinaison du logo et version minimaliste"
+      ],
+      "tools": ["Illustrator", "Photoshop"],
+      "media": [
+        { "src": "le-georges/tenue.jpg", "alt": "Membres de l'équipe de dos portant les t-shirts au logo du restaurant.", "kind": "photo", "ratio": "1/1" },
+        { "src": "le-georges/casquette-1.jpg", "alt": "Maquette de casquette noire brodée « Le Georges ».", "kind": "graphic" },
+        { "src": "le-georges/casquette-2.jpg", "alt": "Maquette de casquette noire avec le logo du restaurant.", "kind": "graphic" }
+      ]
+    },
+    {
+      "title": "Cave",
+      "accent": "du Georges",
+      "layout": "sticky",
+      "points": [
+        "Création d'une publication Instagram pour l'inauguration de la cave",
+        "Mise en avant de la nouvelle sélection de vins",
+        "Conception d'un visuel élégant et haut de gamme",
+        "Mise en page et typographie sur InDesign, retouche photo sur Photoshop"
+      ],
+      "tools": ["InDesign", "Photoshop"],
+      "media": [
+        { "src": "le-georges/cave.jpg", "alt": "Visuel « Cave du Georges — une sélection unique de vins d'exception ».", "kind": "graphic", "ratio": "4/5" }
+      ]
+    },
+    {
+      "title": "Encart",
+      "accent": "publicitaire",
+      "layout": "full",
+      "points": [
+        "Création d'un encart publicitaire",
+        "Mise en avant de l'identité et de l'ambiance conviviale du restaurant",
+        "Mise en page photo et typographie sur InDesign"
+      ],
+      "tools": ["InDesign", "Photoshop"],
+      "media": [
+        { "src": "le-georges/encart.jpg", "alt": "Encart publicitaire noir et blanc montrant le cuisinier en cuisine.", "kind": "graphic" }
+      ]
+    },
+    {
+      "title": "Reels",
+      "accent": "Instagram",
+      "layout": "band",
+      "points": ["Reels tournés au restaurant, adaptés aux codes d'Instagram"],
+      "tools": ["CapCut"],
+      "note": "Flouter le nom visible dans l'avis client avant publication.",
+      "media": [
+        { "src": "le-georges/reel-soiree.jpg", "alt": "Extrait de reel : soirée dansante au restaurant.", "kind": "video", "ratio": "9/16", "href": "https://www.instagram.com/reel/DM90EWrtoP8/" },
+        { "src": "le-georges/reel-pov.jpg", "alt": "Extrait de reel : « POV : quand la patronne passe t'aider derrière le bar ».", "kind": "video", "ratio": "9/16", "href": "https://www.instagram.com/reel/DKzyX11NQf2/" },
+        { "src": "le-georges/reel-avis.jpg", "alt": "Extrait de reel : réponse humoristique à un avis client.", "kind": "video", "ratio": "9/16", "href": "https://www.instagram.com/reel/DL4p2-ytCRv/", "rights": "a-confirmer" }
+      ]
+    },
+    {
+      "title": "Feed",
+      "accent": "Instagram",
+      "layout": "grid",
+      "points": ["Photographies pour le fil Instagram du restaurant"],
+      "tools": ["Lightroom", "Photoshop"],
+      "media": [
+        { "src": "le-georges/feed-cocktail.jpg", "alt": "Cocktail rosé à l'orange séchée sur le bar.", "kind": "photo", "ratio": "1/1", "href": "https://www.instagram.com/p/DKMJOQwtdvL/" },
+        { "src": "le-georges/feed-vin.jpg", "alt": "Bouteille de vin rouge et verre en terrasse.", "kind": "photo", "ratio": "1/1", "href": "https://www.instagram.com/p/DOAw7OYCDWZ/" },
+        { "src": "le-georges/feed-salade.jpg", "alt": "Assiette de salade au poulet croustillant.", "kind": "photo", "ratio": "1/1", "href": "https://www.instagram.com/p/DLCoXXmts2G/" },
+        { "src": "le-georges/feed-facade.jpg", "alt": "Façade et terrasse du restaurant Le Georges.", "kind": "photo", "ratio": "1/1", "href": "https://www.instagram.com/p/DNnBDSmoZfz/" },
+        { "src": "le-georges/feed-bar.jpg", "alt": "Étagères de bouteilles éclairées derrière le bar.", "kind": "photo", "ratio": "1/1", "href": "https://www.instagram.com/p/DJoUC1ePrkF/" },
+        { "src": "le-georges/feed-terrasse.jpg", "alt": "Clients en terrasse sous les parasols rouges.", "kind": "photo", "ratio": "1/1", "href": "https://www.instagram.com/p/DJtdmV5Kslm/", "rights": "a-confirmer" }
+      ]
+    },
+    {
+      "title": "Événements",
+      "accent": "& affiches",
+      "layout": "grid",
+      "points": ["Stories et affiches pour les événements et offres du restaurant"],
+      "tools": ["Photoshop", "Canva", "Lightroom"],
+      "note": "Les stories utilisant des photos de sportifs sont exclues (photos tierces).",
+      "media": [
+        { "src": "le-georges/story-cookies.jpg", "alt": "Story « Goûtez nos cookies faits maison ».", "kind": "graphic", "ratio": "9/16" },
+        { "src": "le-georges/affiche-blind-test.jpg", "alt": "Affiche « Blind Test Night » suivie d'un DJ set.", "kind": "graphic" },
+        { "src": "le-georges/affiche-gipsys.jpg", "alt": "Affiche du concert « The Gipsy's » le 31 juillet.", "kind": "graphic" },
+        { "src": "le-georges/affiche-fin-saison.jpg", "alt": "Affiche « Soirée de fin de saison » le 31 août.", "kind": "graphic" },
+        { "src": "le-georges/affiche-carnaval.jpg", "alt": "Affiche de la soirée Carnaval du restaurant.", "kind": "graphic" },
+        { "src": "le-georges/bon-cadeau.jpg", "alt": "Bon cadeau de 50 € valable au restaurant.", "kind": "graphic" },
+        { "src": "le-georges/story-rugby.jpg", "alt": "Story de diffusion d'un match de rugby.", "kind": "graphic", "ratio": "9/16", "rights": "refuse" },
+        { "src": "le-georges/story-roland-garros.jpg", "alt": "Story de diffusion de Roland-Garros.", "kind": "graphic", "ratio": "9/16", "rights": "refuse" }
+      ]
+    }
+  ],
+  "results": [
+    { "value": "2 532", "label": "vues sur la publication « Cave du Georges »", "source": "Statistiques Instagram du restaurant", "publishable": false },
+    { "value": "1 119", "label": "comptes touchés", "source": "Statistiques Instagram du restaurant", "publishable": false },
+    { "value": "71,8 %", "label": "de l'audience hors abonnés", "source": "Statistiques Instagram du restaurant", "publishable": false }
+  ],
+  "credits": "Contenus réalisés pour le restaurant Le Georges (Biarritz), présentés avec son accord. Les marques citées appartiennent à leurs détenteurs respectifs.",
+  "rights": {
+    "owner": "Le Georges",
+    "status": "a-demander",
+    "notes": "Accord écrit du restaurant à obtenir, ainsi que celui des personnes reconnaissables (équipe, clients, cuisinier). Licences musicales des reels et des éléments Canva à vérifier."
+  },
+  "next": "shootings-moto"
+}

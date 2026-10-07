@@ -1,0 +1,11 @@
+{
+  "title": "Affiche Cars 4",
+  "order": 8,
+  "group": "detournement",
+  "label": "Exercice de détournement",
+  "context": null,
+  "media": [
+    { "src": "archives/cars-4.jpg", "alt": "Affiche fictive « Lightning McQueen — The Return ».", "kind": "graphic" }
+  ],
+  "rights": { "status": "a-confirmer", "notes": "Personnage et marque de tiers." }
+}
